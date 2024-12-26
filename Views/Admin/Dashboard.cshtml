@@ -1,0 +1,163 @@
+﻿@model Real_State.Models.DashboardAnalytics
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+@{
+    Layout = "_AdminLayout.cshtml";
+}
+
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <!-- Sales Today -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Sales Today</p>
+                      <h6 class="mb-0">@Model.SalesToday</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Total Sales -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sales</p>
+                    <h6 class="mb-0">@Model.TotalSales</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Revenue Today -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Revenue Today</p>
+                    <h6 class="mb-0">@Model.RevenueToday</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Total Revenue -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0">@Model.TotalRevenue</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Total Users -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-users fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Users</p>
+                    <h6 class="mb-0">@Model.TotalUsers</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Total Admins -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-user-shield fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Admins</p>
+                    <h6 class="mb-0">@Model.TotalAdmins</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Total Properties Sold -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-home fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Properties Sold</p>
+                    <h6 class="mb-0">@(Model.TotalProperties - Model.PropertiesUnsold)</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Total Properties Unsold -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-home fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Properties Unsold</p>
+                    <h6 class="mb-0">@Model.PropertiesUnsold</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<canvas id="walletTransactionsChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Get the transactions from ViewBag
+    var transactions = JSON.parse('@Html.Raw(ViewBag.WalletTransactions)');
+
+    // Format the dates in English
+    var labels = transactions.map(t => {
+        let date = new Date(t.TransactionDate);
+        return new Intl.DateTimeFormat('en-US', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true // AM/PM format
+        }).format(date);
+    });
+
+    var data = transactions.map(t => t.Amount);
+    var types = transactions.map(t => t.Type);
+
+    // Chart.js Configuration
+    var ctx = document.getElementById('walletTransactionsChart').getContext('2d');
+    var walletTransactionsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Transaction Amounts',
+                data: data,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Amount'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        textAlign: 'left'
+                    }
+                }
+            }
+        }
+    });
+
+</script>

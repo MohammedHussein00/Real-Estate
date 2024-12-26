@@ -1,0 +1,433 @@
+﻿@using System.Security.Claims
+@{
+    bool isUserLoggedIn = User.Identity.IsAuthenticated;
+
+    // Retrieve claim values
+    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    string userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+    string userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+    string userName = User.FindFirst(ClaimTypes.Name)?.Value;
+    string userImgUrl = User.FindFirst("ImgUrl")?.Value; // Custom claim for ImgUrl
+    if (string.IsNullOrEmpty(userImgUrl))
+    {
+        userImgUrl = "/Static Images/profile1.png";  // Fallback to default profile image
+    }
+}
+
+
+
+@* test header  *@
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light p-3" style="box-shadow:0 1px 9px 0 #a3a0a0;padding: 40px 31px!important;width:100%;">
+    <a class=" col-lg-2">
+        <img style="width: 60px;" src="~/Static Images/logo-with-name.png" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="menu collapse navbar-collapse  justify-content-between" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item @(IsActive("HomePage", "Home") ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Home", "HomePage")">Home</a>
+            </li>
+            <li class="nav-item @(IsActive("HomePage", "PropertyList") ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("PropertyList", "HomePage")">Properties</a>
+            </li>
+            <li class="nav-item @(IsActive("User", "SavedProperties") ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("SavedProperties", "User")">Saved Properties</a>
+            </li>
+
+            <li class="nav-item @(IsActive("HomePage", "About") ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("About", "HomePage")">About Us</a>
+            </li>
+        </ul>
+
+
+        <div class="col-md-3 col-sm-3 col-xs-2 d-flex justify-content-end">
+            @if (isUserLoggedIn)
+            {
+
+
+
+                <nav class="menu" style="padding-right: 100px;">
+                    <ol>
+                        <li class="menu-item dropdown" style="display: flex;gap: 15px;align-items: center;justify-content:flex-end;">
+
+
+                            <a href="@Url.Action("Wallet", "User")" style="position: relative;margin-right: 30px;cursor:pointer;">
+                                <i class="bi bi-wallet2" style="font-size: 25px;color: var(--icon-color);"></i>
+                            </a>
+
+                            <ul class="notification-drop">
+                                <li class="item">
+                                    <i class="bi bi-bell m-0" aria-hidden="true"></i>
+                                    <span class="indicator" style="top:5px;"></span>
+                                    <ul class="notification-bell-popup" id="notificationList" style="max-height:400px;overflow:hidden;overflow-y:scroll;">
+                                    </ul>
+                                </li>
+                            </ul>
+
+
+
+
+
+                            <div class="dropdown-center " id="dropdownToggle">
+                                <div class="d-flex align-items-center profile" type="button" style="width:max-content;">
+                                    <img src="@userImgUrl" alt="" class="rounded-img rounded-circle" style="width: 30px;height: 30px;">
+                                    <p dtyle="color: #6c757d"
+                                       style="margin-left: 10px;">Profile</p>
+                                    <i class="fa-solid fa-chevron-down" style="color:var(--icon-color);margin-left:5px"></i>
+
+                                </div>
+
+                            </div>
+
+
+
+
+                            <ol class="sub-menu">
+                                <div class="container d-block">
+                                    <div class="profile-header">
+
+                                        <img src="@userImgUrl" alt="User Image" style="width: 50px;height: 50px;border-radius: 50%;object-fit: contain;border: 1px solid var(--color-1);" /> <!-- Display user image if available -->
+
+                                        <span class="profile-name" style="color: #353232;margin-left: 10px;">@userName</span>
+                                    </div>
+                                    <hr />
+                                    <a href="@Url.Action("Profile", "User")" class="menu-item profile-menu-item"><i class="fas fa-user-edit"></i>Edit Profile</a>
+                                    <a href="@Url.Action("Logout", "Auth")" class="menu-item profile-menu-item"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                                </div>
+                            </ol>
+                        </li>
+                    </ol>
+                </nav>
+
+            }
+            else
+            {
+                <div class="user" style="padding:0.5rem">
+                    <a class="sign" href="@Url.Action("Register", "Auth")">Sign up</a> |
+                    <a class="sign" href="@Url.Action("Login", "Auth")">Sign in</a>
+
+                </div>
+            }
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header" style="display: flex;justify-content: flex-end;padding-top: 29px;padding-right: 20px;">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <span style="
+    color: #44474a;
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: lighter;
+">Main</span>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/Home" routerLinkActive="active"><i class="pi pi-home " style="margin-right: 3px;"></i> Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/agents" routerLinkActive="active"><i class="pi pi-users " style="margin-right: 3px;"></i>Agents</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/gpt" routerLinkActive="active">COBRAGPT</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/gpt" routerLinkActive="active">Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/gpt" routerLinkActive="active">
+                    <svg routerLink="/agents" routerLinkActive="active"
+                         style="margin-right: 3px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                        <path d="M120-40v-880h80v80h560v-80h80v880h-80v-80H200v80h-80Zm80-480h80v-160h240v160h240v-240H200v240Zm0 320h240v-160h240v160h80v-240H200v240Zm160-320h80v-80h-80v80Zm160 320h80v-80h-80v80ZM360-520h80-80Zm160 320h80-80Z" />
+                    </svg>
+                    Furnutre
+                </a>
+            </li>
+        </ul>
+        <div>
+            <span style="
+      color: #44474a;
+      font-family: sans-serif;
+      font-size: 12px;
+      font-weight: lighter;
+  ">Profile</span>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/login" routerLinkActive="active">Sign in</a>
+                </li>
+                <li>
+                    <a class="nav-link" routerLink="/sign-up" routerLinkActive="active">Create new Account</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@* test header  *@
+
+
+
+
+
+
+<script>
+
+    function markNotificationsAsRead() {
+        fetch('/User/MarkNotificationsAsRead', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    const indicator = document.querySelector('.indicator');
+                    indicator.textContent = '';
+                    indicator.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            });
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Toggle the dropdown visibility with rotateX animation for Notifications
+        const notificationItems = document.querySelectorAll('.notification-drop .item');
+        notificationItems.forEach(function (item) {
+            item.addEventListener('click', function (e) {
+                // Prevent click event from propagating to document
+                e.stopPropagation();
+                const popup = this.querySelector('.notification-bell-popup');
+                if (popup) {
+                    popup.classList.toggle('show');
+                    markNotificationsAsRead();
+                }
+            });
+        });
+
+
+        // Close the dropdowns if clicked outside
+        document.addEventListener('click', function (e) {
+            // Close notification dropdown if click is outside
+            if (!e.target.closest('.notification-drop')) {
+                const notificationPopup = document.querySelector('.notification-drop .item ul');
+                if (notificationPopup) {
+                    notificationPopup.classList.remove('show');
+                }
+            }
+
+        });
+
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ensure script is loaded
+
+        const dropdownToggle = document.querySelector('.profile');
+        const subMenu = document.querySelector('.sub-menu');
+        const profile = document.querySelector('#dropdownToggle .profile');
+        const menuItems = document.querySelectorAll('.profile-menu-item');
+
+        if (dropdownToggle) {
+            // Ensure dropdownToggle is available
+
+            // Toggle the dropdown menu when clicking on the profile container
+            dropdownToggle?.addEventListener('click', function (event) {
+                subMenu.classList.toggle('open');
+            });
+        } 
+
+        // Close the dropdown when any menu item is clicked
+        menuItems?.forEach(item => {
+            item.addEventListener('click', function () {
+
+                subMenu?.classList.remove('open'); // Close the menu
+            });
+        });
+
+        // Close the dropdown if clicking outside of the dropdown
+        document.addEventListener('click', function (event) {
+            if (!dropdownToggle?.contains(event.target)) {
+                subMenu?.classList.remove('open'); // Close the menu if clicked outside
+            }
+        });
+
+        // Prevent closing the dropdown when clicking on the profile image or name
+        profile.addEventListener('click', function (event) {
+            event.stopPropagation(); // Prevent the event from bubbling up to the document
+        });
+    });
+
+
+    
+
+
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+@functions {
+    public bool IsActive(string controller, string action)
+    {
+        // Get the current controller and action
+        var routeData = ViewContext.RouteData;
+        var currentController = routeData.Values["controller"]?.ToString();
+        var currentAction = routeData.Values["action"]?.ToString();
+
+        // Check if current controller and action match the provided values
+        return string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+
+     <!-- Notification list -->
+
+<script>
+    // Function to calculate "time ago" format for a given date
+    function timeAgo(dateString) {
+        const now = new Date();
+        const notificationDate = new Date(dateString); // Assume dateString is in ISO 8601 (UTC)
+        const seconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000); // Use getTime for milliseconds
+
+        const intervals = [
+            { label: 'year', seconds: 31536000 },
+            { label: 'month', seconds: 2592000 },
+            { label: 'day', seconds: 86400 },
+            { label: 'hour', seconds: 3600 },
+            { label: 'minute', seconds: 60 }
+        ];
+
+        for (const interval of intervals) {
+            const count = Math.floor(seconds / interval.seconds);
+            if (count >= 1) {
+                return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+            }
+        }
+
+        return 'just now';
+    }
+
+    // Helper function to format the date into an English-readable format
+    function formatEnglishDate(dateString) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'UTC' // Interpret date as UTC
+        };
+        return new Date(dateString).toLocaleString('en-US', options);
+    }
+
+    // Function to fetch and display notifications
+    async function getNotificationChat() {
+        try {
+            const response = await fetch('/User/GetNotificationChat', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include' // Include credentials for authentication
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch notifications.');
+            }
+
+            const data = await response.json();
+
+            if (!data.isAuthenticated) {
+                document.getElementById('notificationList').innerHTML = `<li>${data.Message}</li>`;
+            } else {
+
+                displayNotifications(data.notifications);
+
+                const unreadCount = data.notifications.filter(notification => !notification.isRead).length;
+                console.log(unreadCount);
+                const indicator = document.querySelector('.indicator');
+                if (indicator) {
+                    indicator.textContent = unreadCount;
+                    if (unreadCount === 0) {
+                        indicator.style.display = 'none';
+                    } else {
+                        indicator.style.display = 'block';
+                        indicator.text = unreadCount;
+                    }
+                }
+
+            }
+        } catch (error) {
+            console.error('Error:', error.message);
+            document.getElementById('notificationList').innerHTML = "<li>Error loading notifications.</li>";
+        }
+    }
+
+    // Function to display notifications in the list
+    // Function to display notifications in the list
+    function displayNotifications(notifications) {
+        const notificationList = document.getElementById('notificationList');
+        notificationList.innerHTML = ''; // Clear existing notifications
+
+        if (notifications.length === 0) {
+            notificationList.innerHTML = "<li>No notifications available.</li>";
+            return;
+        }
+
+        notifications.forEach(notification => {
+            const li = document.createElement('li');
+
+            // Render the notification content, including the link
+            const contentPara = document.createElement('p');
+            contentPara.innerHTML = notification.content; // Set as innerHTML to render the link
+
+            // Create a second <p> element for the time ago information
+            const timePara = document.createElement('p');
+            timePara.style.fontSize = '12px';
+            timePara.style.paddingLeft = '5px';
+            timePara.innerHTML = `${timeAgo(notification.createdAt)}`;
+
+            // Append both paragraphs to the <li> element
+            li.appendChild(contentPara);
+            li.appendChild(timePara);
+
+            // Append the <li> to the notification list
+            notificationList.appendChild(li);
+        });
+    }
+
+    getNotificationChat();
+</script>

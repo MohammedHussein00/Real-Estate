@@ -1,0 +1,186 @@
+﻿@model Real_State.Models.RegisterViewModel;
+
+@{
+    Layout = "_AdminLayout.cshtml";
+}
+
+
+
+<div class="d-flex row flex-row-reverse w-100">
+    <div class="d-flex flex-column align-items-center justify-content-center w-100">
+        <div class="d-flex flex-column align-items-center" style="width: 100%; height: 86%; justify-content: center;">
+            <form asp-action="AddAdmin" asp-controller="Admin" method="post" id="registerForm" class="w-75" style="height: 100%; display: flex; flex-direction: column; gap: 30px;">
+                <div class="d-flex justify-content-between align-items-center">
+                <h4 class="col-lg-6 col-md-8 col-sm-8">Add Admin</h4>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+                <!-- Name Field -->
+                <div>
+                    <div class="form-floating mb-3">
+                        <input id="Name" type="text" class="form-control" asp-for="Name" placeholder="Name" required />
+                        <label for="Name">Name</label>
+                    </div>
+                    <div class="mb-3">
+                        <span id="nameErrorRequired" class="text-danger"></span>
+                        <span id="nameError" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- Email Field -->
+                <div>
+                    <div class="form-floating mb-3">
+                        <input id="Email" type="email" class="form-control" asp-for="Email" placeholder="Email" required />
+                        <label for="Email">Email</label>
+                    </div>
+                    <div class="mb-3">
+                        <span id="emailErrorRequired" class="text-danger"></span>
+                        <span id="emailError" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div>
+                    <div class="form-floating mb-3">
+                        <input id="Password" type="password" class="form-control" asp-for="Password" placeholder="Password" required />
+                        <label for="Password">Password</label>
+                    </div>
+                    <div class="mb-3">
+                        <span id="passwordErrorRequired" class="text-danger"></span>
+                        <span id="passwordError" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- Phone Field -->
+                <div>
+                    <div class="form-floating mb-5">
+                        <input id="Phone" type="text" class="form-control" asp-for="Phone" placeholder="Phone" required onkeypress="allowOnlyNumbers(event)" oninput="formatPhoneNumber(event)" />
+                        <label for="Phone">Phone</label>
+                    </div>
+                    <div class="mb-3">
+                        <span id="phoneErrorRequired" class="text-danger"></span>
+                        <span id="phoneError" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <span class="text-danger">@Model.Message</span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("Password");
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+
+    function validateField(input, requiredErrorId, formatErrorId, requiredMessage, formatMessage, minLength = 0, isEmail = false, isPassword = false) {
+        const requiredErrorElement = document.getElementById(requiredErrorId);
+        const formatErrorElement = document.getElementById(formatErrorId);
+        requiredErrorElement.textContent = "";
+        formatErrorElement.textContent = "";
+
+        if (input.value.length === 0) {
+            input.style.borderColor = "red";
+            requiredErrorElement.textContent = requiredMessage;
+        } else if (isEmail && !input.checkValidity()) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+        } else if (isPassword && !validatePassword(input.value)) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+            //phone
+        } else if (!isEmail && !isPassword && input.value.length != minLength) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+        } else {
+            input.style.borderColor = "#0198a0";
+        }
+    }
+
+    // name
+    document.getElementById("Name").addEventListener("input", function () {
+        validateField(this, "nameErrorRequired", "nameError", "Name is required.", "Name must be at least 3 characters long.", 3);
+    });
+    document.getElementById("Name").addEventListener("blur", function () {
+        validateField(this, "nameErrorRequired", "nameError", "Name is required.", "Name must be at least 3 characters long.", 3);
+    });
+
+
+    // email
+    document.getElementById("Email").addEventListener("input", function () {
+        validateField(this, "emailErrorRequired", "emailError", "Email is required.", "Must be a valid email address.", 0, true);
+    });
+    document.getElementById("Email").addEventListener("blur", function () {
+        validateField(this, "emailErrorRequired", "emailError", "Email is required.", "Must be a valid email address.", 0, true);
+    });
+
+
+    // password
+    document.getElementById("Password").addEventListener("input", function () {
+        validateField(this, "passwordErrorRequired", "passwordError", "Password is required.", "Password must be at least 8 characters long.", 8);
+    });
+    document.getElementById("Password").addEventListener("blur", function () {
+        validateField(this, "passwordErrorRequired", "passwordError", "Password is required.", "Password must be at least 8 characters long.", 8);
+    });
+
+    // phone
+
+    document.getElementById("Phone").addEventListener("input", function () {
+        validateField(this, "phoneErrorRequired", "phoneError", "Phone is required.", "Phone must be 11 digits long.", 11);
+    });
+    document.getElementById("Phone").addEventListener("blur", function () {
+        validateField(this, "phoneErrorRequired", "phoneError", "Phone is required.", "Phone must be 11 digits long.", 11);
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", function (event) {
+        const name = document.getElementById("Name");
+        const email = document.getElementById("Email");
+        const password = document.getElementById("Password");
+        const phone = document.getElementById("Phone");
+
+        validateField(name, "nameErrorRequired", "nameError", "Name is required.", "Name must be at least 3 characters long.", 3);
+        validateField(email, "emailErrorRequired", "emailError", "Email is required.", "Must be a valid email address.", 0, true);
+        validateField(password, "passwordErrorRequired", "passwordError", "Password is required.", "Password must be valid with at least 8 characters, uppercase, lowercase, number, and special character.", 8, false, true);
+        validateField(phone, "phoneErrorRequired", "phoneError", "Phone is required.", "Phone must be 11 digits long.", 11);
+
+        if (name.value.length < 3 || !email.checkValidity() || !validatePassword(password.value) || phone.value.length !== 11) {
+            event.preventDefault();
+        }
+    });
+
+    function allowOnlyNumbers(event) {
+        const key = String.fromCharCode(event.keyCode || event.which);
+        if (!/[0-9]/.test(key)) {
+            event.preventDefault();
+        }
+    }
+
+    function formatPhoneNumber(event) {
+        const input = event.target;
+        // Remove any non-digit characters
+        let value = input.value.replace(/\D/g, '');
+        // Set the input value back to the sanitized number
+        input.value = value;
+    }
+</script>
+
+<!-- Bootstrap Alert Container -->
+<!-- Bootstrap Alert Container -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="position: fixed; top: 10px; right: 10px; z-index: 1050;">
+    @if (string.IsNullOrEmpty(Model.Message) && !string.IsNullOrEmpty(Model.Name))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="min-width: 300px;">
+            Admin added successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <script>
+            // Redirect to Admins page after 5 seconds
+            setTimeout(function () {
+                window.location.href = '@Url.Action("Admins", "Admin")';
+            }, 5000); // 5000 milliseconds = 5 seconds
+        </script>
+    }
+</div>
+
+

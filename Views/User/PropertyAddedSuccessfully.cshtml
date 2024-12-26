@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<title>Property Added Successfully</title>
+
+<div class="container">
+    <div class="icon">✔</div>
+    <h1>Property Added Successfully!</h1>
+    <p>Your property has been added successfully. You will receive a notification once it is accepted by the admin.</p>
+    <a href=" @Url.Action("Home", "HomePage")" class="back-button">Back to Home</a>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        text-align: center;
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .container h1 {
+        color: #28a745;
+        margin-bottom: 10px;
+    }
+
+    .container p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #0056b3;
+    }
+
+    .icon {
+        font-size: 50px;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+</style>

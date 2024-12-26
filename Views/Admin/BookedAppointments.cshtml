@@ -1,0 +1,118 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_AdminLayout.cshtml";
+}
+@model IEnumerable<Real_State.Tables.Appointment>
+
+@if (ViewBag?.IsSold != null)
+{
+    <table class="table table-bordered table-striped">
+        <!-- Table content here -->
+    </table>
+}
+else
+{
+    <div>This property is sold</div>
+}
+
+
+<div class="container mt-4 p-4">
+    <h2 class="mb-4">Booked Appointments for Property: @ViewBag.PropertyTitle</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            No appointments have been booked for this property yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+           
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Appointment Type</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 1;
+
+                        foreach (var appointment in Model)
+                        {
+                            // Checking if the appointment type is not 'buy'
+                            bool forSell = appointment.AppointmentType.ToLower() != "buy";
+
+                        
+                        <tr>
+                            <td>@index</td>
+                            <td>@appointment.User?.Name</td>
+                            <td>@appointment.User?.Email</td>
+                            <td>@appointment.AppointmentType</td>
+                            <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                            <td>@appointment.AppointmentTime.ToString(@"hh\:mm")</td>
+                            <td>
+                                @if (!forSell)
+                                {
+                                    <button data-property-id="@appointment.PropertyId"
+                                            data-user-email="@appointment.User?.Email"
+                                                class="mark-as-sold-btn btn btn-primary">
+                                        <i class="bi bi-bookmark-check-fill"></i> Sell it
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">...</span>
+                                }
+                            </td>
+                        </tr>
+                        index++;
+                        }
+                    }
+
+                </tbody>
+                </table>
+      
+        </div>
+    }
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    //<<<<<<<<<<<<<<<<< mark as Sold >>>>>>>>>>>>>
+    $(document).ready(function () {
+        // Bind click event to dynamically generated buttons
+        $(document).on('click', '.mark-as-sold-btn', function () {
+            var propertyId = $(this).data('property-id');
+            var userEmail = $(this).data('user-email');
+
+            if (!propertyId || !userEmail) {
+                alert('Invalid property or user data.');
+                return;
+            }
+
+            $.ajax({
+                url: `/api/properties/${propertyId}/${userEmail}/mark-sold`,
+                type: 'POST',
+                success: function (response) {
+                    alert(response.message); // Feedback
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred while marking the property as sold.');
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,597 @@
+﻿
+
+.card {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.card-img-top {
+    border-top-right-radius: 0;
+    width: 30%;
+    height: inherit;
+    flex: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.text-description {
+    padding: 25px 0;
+    font-size: 15px;
+    max-height: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: inherit;
+    white-space: nowrap;
+    max-width: 300px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.icon-text {
+    padding: 0 15px;
+    display: flex;
+    align-items: end;
+}
+
+.number {
+    padding: 0 5px;
+    margin-bottom: 0 !important;
+}
+
+svg {
+    fill: var(--icon-color);
+}
+
+.card-text {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.location-title {
+    font-weight: 500;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+
+.type {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.room {
+    /* height: 30px; */
+}
+
+.contact-btn {
+    background-color: var(--color_1);
+    border: none;
+    margin-right: 10px;
+}
+
+    .contact-btn:hover {
+        background-color: #01a8b1;
+    }
+
+
+
+
+
+.bayut-search {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 50px;
+    box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.language,
+.site-settings,
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.globe-icon,
+.gear-icon,
+.heart-icon,
+.star-icon,
+.user-icon {
+    /* Add icons for these elements */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #008000;
+    margin-bottom: 20px;
+}
+
+.search-icon {
+    /* Add icon for the search icon */
+    margin-right: 10px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.buy-dropdown,
+.location-input,
+.checkbox {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.location-input {
+    width: 30%;
+}
+
+.location-icon {
+    /* Add icon for the location icon */
+    margin-right: 5px;
+}
+
+.info-icon {
+    /* Add icon for the info icon */
+    margin-left: 5px;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.mybayut {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #008000;
+}
+
+.mybayut-icon {
+    /* Add icon for the mybayut icon */
+    margin-right: 10px;
+}
+
+.menu-items {
+    display: flex;
+    align-items: center;
+}
+
+    .menu-items a {
+        text-decoration: none;
+        color: #008000;
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .menu-items .new {
+        background-color: #ff0000;
+        color: white;
+    }
+
+.filters {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+}
+
+.filter-category {
+    display: flex;
+    align-items: center;
+}
+
+.filter-button,
+.filter-dropdown {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.filter-icon {
+    /* Add icon for the filter icon */
+    margin-left: 5px;
+}
+
+.save-search {
+    padding: 10px;
+    color: blue;
+    cursor: pointer;
+}
+
+.all-ready-offPlan {
+    display: flex;
+    border: 1px solid var(--icon-color);
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.all-ready-offPlan-child {
+    padding: 10px 12px;
+}
+
+.all-ready-offPlan-child-active {
+    background-color: var(--color_1);
+    color: white;
+    fill: white !important;
+}
+
+.location-input-in {
+    outline: none;
+    border: none;
+    width: 100%;
+}
+
+.location-input:focus-within {
+    border-color: black;
+}
+
+.card {
+    border: none;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page-item.disabled .page-link {
+    pointer-events: none;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+.btn{
+    margin:0!important;
+}
+..btn-outline-primary {
+    color: #6c757d;
+}
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-check:checked + .btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check) + .btn:active{
+    background-color:var(--color-1)!important;
+}
+
+@media(max-width:768px) {
+    .container {
+        padding: 0;
+        width: 100%;
+    }
+}
+
+@media(max-width:425px) {
+    .card {
+        flex-wrap: wrap;
+    }
+
+
+
+
+    button {
+        font-size: 12px;
+    }
+
+    .filter-category {
+        flex-wrap: wrap !important;
+    }
+
+    .dropdown {
+        width: 50%;
+        margin: 10px 0;
+    }
+
+    p-treeselect, p-multiselect, p-dropdown {
+        width: 50%;
+    }
+
+    .dropdown button {
+        width: 90%;
+    }
+}
+
+.dropdown button, ::ng-deep .p-multiselect, ::ng-deep .p-treeselect, ::ng-deep .p-dropdown {
+    width: 90%;
+}
+
+.dropdown-with-icon {
+    position: relative;
+    padding-left: 2.5rem; /* Adjust this to position the text correctly */
+}
+p{
+    margin-bottom:0!important;
+}
+
+
+
+/*price rang*/
+/* Import Google Font - Poppins */
+
+
+
+
+header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+header p {
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.price-input, .space-input {
+    width: 100%;
+    display: flex;
+    margin: 30px 0 35px;
+}
+
+    .price-input .field, .space-input .field {
+        display: flex;
+        width: 100%;
+        height: 45px;
+        align-items: center;
+    }
+
+.field input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 19px;
+    margin-left: 12px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #999;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.price-input .separator, .space-input .separator {
+    width: 130px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider, .slider-space {
+    height: 5px;
+    position: relative;
+    background: #ddd;
+    border-radius: 5px;
+}
+
+    .slider .progress, .slider-space .progress-space {
+        height: 100%;
+        position: absolute;
+        border-radius: 5px;
+        background: #17a2b8;
+    }
+
+.range-input, .range-input-space {
+    position: relative;
+}
+
+    .range-input input, .range-input-space input {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        top: -5px;
+        background: none;
+        pointer-events: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #17a2b8;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #17a2b8;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+
+/*price rang*/
+
+
+/* <<<<<<<<<<<<<<<<<< dropdown  >>>>>>>>>>>>>>>>>>*/
+/* General Dropdown Styles */
+.dropdown {
+    width: 100%;
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 300;
+}
+
+@media (min-width: 768px) {
+    .dropdown {
+        width: 500px;
+    }
+}
+
+/* When dropdown toggle is checked, show the options */
+.dropdown__switch-type:checked + .dropdown__options-filter-type .dropdown__select-type,
+.dropdown__switch-currency:checked + .dropdown__options-filter-currency .dropdown__select-currency,
+.dropdown__switch-finishing:checked + .dropdown__options-filter-finishing .dropdown__select-finishing,
+.dropdown__switch-payment:checked + .dropdown__options-filter-payment .dropdown__select-payment {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+/* Rotate the dropdown arrow when open */
+.dropdown__switch-currency:checked + .dropdown__options-filter-currency .dropdown__filter-currency::after,
+.dropdown__switch-type:checked + .dropdown__options-filter-type .dropdown__filter-type::after,
+.dropdown__switch-finishing:checked + .dropdown__options-filter-finishing .dropdown__filter-finishing::after,
+.dropdown__switch-payment:checked + .dropdown__options-filter-payment .dropdown__filter-payment::after {
+    transform: rotate(-135deg);
+}
+
+/* Basic styling for the dropdown trigger and label */
+.dropdown__options-filter-type, .dropdown__options-filter-currency, .dropdown__options-filter-finishing, .dropdown__options-filter-payment {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* The dropdown input field appearance */
+.dropdown__filter-type, .dropdown__filter-currency, .dropdown__filter-finishing, .dropdown__filter-payment {
+    position: relative;
+    display: flex;
+    padding: 13px;
+    color: #595959;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: .3s;
+    border: 1px solid var(--icon-color);
+}
+
+    .dropdown__filter-type:focus, .dropdown__filter-currency:focus, .dropdown__filter-finishing:focus, .dropdown__filter-payment:focus {
+        outline: none;
+    }
+
+    /* Dropdown arrow styles */
+    .dropdown__filter-type::after, .dropdown__filter-currency::after, .dropdown__filter-finishing::after, .dropdown__filter-payment::after {
+        position: absolute;
+        top: 45%;
+        right: 20px;
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-right: 1px solid #595959;
+        border-bottom: 1px solid #595959;
+        transform: rotate(45deg) translateX(-45%);
+        transition: .3s ease-in-out;
+    }
+
+/* The dropdown options container */
+.dropdown__select-type, .dropdown__select-currency, .dropdown__select-finishing, .dropdown__select-payment {
+    position: absolute;
+    top: 100%;
+    z-index: 3;
+    left: 0;
+    border: 1px solid;
+    width: 100%;
+    background: white;
+    margin-top: 2px;
+    overflow: hidden;
+    transform: scaleY(0);
+    transform-origin: top;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding: 4px;
+    box-shadow: 0px 0px 3px rgb(0 0 0);
+    opacity: 0;
+    transition: .2s ease-in-out;
+}
+
+/* Dropdown option styling */
+.dropdown__select-option, .dropdown__select-option:last-of-type {
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    transition: .3s;
+}
+
+    /* Remove border from last option */
+    .dropdown__select-option:last-of-type, .dropdown__select-option:last-of-currency, .dropdown__select-option:last-of-finishing, .dropdown__select-option:last-of-payment {
+        border-bottom: 0;
+    }
+
+    /* Hover effect for options */
+    .dropdown__select-option:hover {
+        background-color: #e9ecef;
+    }
+
+/* Add specific styles for payment dropdown */
+.dropdown__select-payment {
+    top: 100%;
+    left: 0;
+    z-index: 5;
+}
+
+/* Optional: Add specific styles for when dropdowns are opened */
+.dropdown__select-currency, .dropdown__select-type, .dropdown__select-finishing, .dropdown__select-payment {
+    transition: all 0.3s ease;
+}
+

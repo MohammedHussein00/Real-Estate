@@ -1,0 +1,351 @@
+﻿@model Real_State.Models.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "_AdminLayout.cshtml";
+}
+@using System.Security.Claims
+
+@{
+    bool isUserLoggedIn = User.Identity.IsAuthenticated;
+    
+    // Retrieve claim values
+    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    string userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+    string userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+    string userName = User.FindFirst(ClaimTypes.Name)?.Value;
+    string userImgUrl = User.FindFirst("ImgUrl")?.Value; // Custom claim for ImgUrl
+    if (string.IsNullOrEmpty(userImgUrl))
+    {
+        userImgUrl = "/Static Images/profile1.png";  // Fallback to default profile image
+    }
+}
+
+
+<div class="container1 rounded bg-white mt-5 mb-5">
+    <div class="d-flex" style="flex-direction:row-reverse;">
+
+        <!-- Profile Form -->
+        <form asp-action="Profile" class="col-8" asp-controller="User" method="post" enctype="multipart/form-data" id="profileForm" style="display: flex;flex-direction: row-reverse;width:70%">
+            <div class="col-5 border-right" style="width:40%">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <label class="poster mt-5 position-relative d-flex justify-content-center" for="Photo">
+                        <!-- Current Image: Initially visible -->
+                        <img class="rounded-circle bg-light" style="cursor:pointer;width: 150px;height:150px;"
+                             src="@userImgUrl" alt="" id="currentImage">
+
+                        <!-- New Image: Initially hidden -->
+                        <img class="rounded-circle bg-light" style="display: none;cursor:pointer;width: 150px;height:150px;"
+                             id="newImage" alt="">
+
+                        <i class="bi bi-camera"></i>
+                    </label>
+                    <!-- File Input to select a new image -->
+
+                    <input hidden type="file" name="Photo" id="Photo" accept="image/*" onchange="changeImage(event)" asp-for="Photo" />
+                    <span class="font-weight-bold mt-3">@Model.Name</span>
+                    <span class="text-black-50">@userEmail</span>
+                </div>
+            </div>
+
+            <div class="col-7 border-right" style="width:60%">
+                <div class="p-3 py-5">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h4 style="color:var(--icon-color);">Personal information</h4>
+                        <div class="d-flex justify-content-between align-items-center experience">
+                            <span><i class="bi bi-pencil-square" style="cursor: pointer;color: var(--icon-color);" id="enableButton"></i></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="labels">Name</label>
+                            <input type="text" class="form-control" placeholder="Enter name" name="Name" asp-for="Name" value="@Model.Name" id="Name" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <span id="nameErrorRequired" class="text-danger"></span>
+                        <span id="nameError" class="text-danger"></span>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-3">
+                            <label class="labels">Email</label>
+                            <input type="email" class="form-control" placeholder="Enter email" name="Email" asp-for="Email" value="@Model.Email" id="Email" required disabled>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="labels">Phone number</label>
+                            <input id="Phone" type="text" placeholder="Phone" class="form-control" asp-for="Phone" required onkeypress="allowOnlyNumbers(event)" oninput="formatPhoneNumber(event)" />
+                        </div>
+                        <div class="mb-5">
+                            <span id="phoneErrorRequired" class="text-danger"></span>
+                            <span id="phoneError" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="regions" class="form-label">Location</label>
+                            <select class="form-select" id="regions" name="Location" asp-for="Location" required>
+                                <!-- Handle the default option -->
+                                @if (string.IsNullOrEmpty(Model.Location))
+                                {
+                                    <option value="" selected disabled>
+                                        Select Your location for notification
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="" selected disabled>
+                                        Select Your location for notification
+                                    </option>
+                                }
+                                <!-- Cairo Regions -->
+                                <optgroup label="Cairo Regions">
+                                    @foreach (var region in Model.CairoLocations)
+                                    {
+                                        if (Model.Location == region)
+                                        {
+                                            <option value="@region" selected>
+                                                @region
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@region">
+                                                @region
+                                            </option>
+                                        }
+                                    }
+                                </optgroup>
+
+                                <!-- Giza Regions -->
+                                <optgroup label="Giza Regions">
+                                    @foreach (var region in Model.GizaLocations)
+                                    {
+                                        if (Model.Location == region)
+                                        {
+                                            <option value="@region" selected>
+                                                @region
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@region">
+                                                @region
+                                            </option>
+                                        }
+                                    }
+                                </optgroup>
+                            </select>
+                            <div class="mb-3">
+                                <span id="locationErrorRequired" class="text-danger"></span>
+                                <span id="locationError" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Change Password Form -->
+        <div class="col-4 row" style=";width:30%">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center flex-column experience">
+                    <span class="pt-3 w-100">Change password</span>
+                    <form id="changePasswordForm">
+                        <div id="message"></div>
+
+                        <div class="form-group">
+                            <label for="OldPassword">Old Password</label>
+                            <input type="password" class="form-control" id="OldPassword" name="OldPassword" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="NewPassword">New Password</label>
+                            <input type="password" class="form-control" id="NewPassword" name="NewPassword" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function changeImage(event) {
+        var reader = new FileReader(); // FileReader to read the selected file
+
+        // Ensure a file is selected
+        if (event.target.files && event.target.files[0]) {
+            // Event handler for when the file is read
+            reader.onload = function (e) {
+                // Get the new image element and set the src to the new base64 image
+                var newImage = document.getElementById('newImage');
+                newImage.src = e.target.result; // Base64 data URL
+
+                // Hide the current image and show the new image
+                document.getElementById('currentImage').style.display = 'none'; // Hide current image
+                newImage.style.display = 'block'; // Show the new image
+            };
+
+            // Read the selected file as a data URL (base64)
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+       function validateField(input, requiredErrorId, formatErrorId, requiredMessage, formatMessage, minLength = 0, isEmail = false, isPassword = false, isPhone = false) {
+        const requiredErrorElement = document.getElementById(requiredErrorId);
+        const formatErrorElement = document.getElementById(formatErrorId);
+        requiredErrorElement.textContent = "";
+        formatErrorElement.textContent = "";
+
+        // Check for empty input
+        if (input.value.trim().length === 0) {
+            input.style.borderColor = "red";
+            requiredErrorElement.textContent = requiredMessage;
+            return;
+        }
+
+        // Check for email validity
+        if (isEmail && !input.checkValidity()) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+            return;
+        }
+
+        // Check for password pattern
+        if (isPassword && !validatePassword(input.value)) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+            return;
+        }  
+        if (isPassword && input.value.trim().length !== 0) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+            return;
+        }
+
+        // Check for minimum length
+        if (!isEmail && !isPassword && input.value.trim().length < minLength) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+            return;
+        }
+
+        // If all validations pass
+        input.style.borderColor = "#0198a0";
+    }
+
+    function validatePassword(password) {
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@@#$%^&*()\-_+=<>?/.,:;'"[\]{}|\\]).{8,}$/;
+        return passwordPattern.test(password);
+    }
+
+    // Input event listeners
+    document.getElementById("Name").addEventListener("input", function () {
+        validateField(this, "nameErrorRequired", "nameError", "Name is required.", "Name must be at least 3 characters long.", 3);
+    });
+    document.getElementById("Name").addEventListener("blur", function () {
+        validateField(this, "nameErrorRequired", "nameError", "Name is required.", "Name must be at least 3 characters long.", 3);
+    });
+
+    document.getElementById("regions").addEventListener("input", function () {
+        validateField(this, "locationErrorRequired", "emailError", "Location is required.", "Must be a valid Location.", 1);
+    });
+    document.getElementById("regions").addEventListener("blur", function () {
+        validateField(this, "locationErrorRequired", "locationError", "Location is required.", "Must be a valid Location.", 1);
+    });
+    document.getElementById("Phone").addEventListener("input", function () {
+        validateField(this, "phoneErrorRequired", "phoneError", "Phone is required.", "Phone must be 11 digits long.", 11,false,false,true);
+    });
+    document.getElementById("Phone").addEventListener("blur", function () {
+        validateField(this, "phoneErrorRequired", "phoneError", "Phone is required.", "Phone must be 11 digits long.", 11,false,false,true);
+    });
+
+    document.getElementById("profileForm").addEventListener("submit", function (event) {
+        const name = document.getElementById("Name");
+        const phone = document.getElementById("Phone");
+        const regions = document.getElementById("regions");
+
+        validateField(name, "nameErrorRequired", "nameError", "Name is required.", "Name must be at least 3 characters long.", 3);
+        validateField(phone, "phoneErrorRequired", "phoneError", "Phone is required.", "Phone must be 11 digits long.", 11,false,false,true);
+
+        if (name.value.length < 3 || !email.checkValidity() || phone.value.length !== 11|| regions.value.length ===0) {
+            event.preventDefault();
+        }
+    });
+
+
+    //<<<<<<<<<<<<<<<<<<<  for allow only numbers to input phone  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    function allowOnlyNumbers(event) {
+        const keyCode = event.keyCode || event.which;
+        const key = String.fromCharCode(keyCode);
+
+        if (!/[0-9]/.test(key)) {
+            event.preventDefault();
+        }
+    }
+
+    function formatPhoneNumber(event) {
+        const input = event.target;
+        // Remove any non-digit characters
+        let value = input.value.replace(/\D/g, '');
+        // Set the input value back to the sanitized number
+        input.value = value;
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Handle form submission with AJAX
+        $('#changePasswordForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Get the new password value
+            const newPassword = $('#NewPassword').val();
+            const oldPassword = $('#OldPassword').val();
+
+            // Password pattern: Minimum 8 characters, at least 1 lowercase, 1 uppercase, 1 digit, and 1 special character
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@@#$%^&*()\-_+=<>?/.,:;'"[\]{}|\\]).{8,}$/;
+
+            // Check if the new password matches the pattern
+            if (!passwordPattern.test(newPassword)) {
+                $('#message').html('<div class="alert alert-danger">New password does not meet the required criteria.</div>');
+                return; // Stop the form submission
+            }
+
+            // Clear previous message
+            $('#message').html('');
+
+            // Prepare data for the AJAX request
+            const formData = {
+                OldPassword: oldPassword,
+                NewPassword: newPassword
+            };
+
+            // Send AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '/User/ChangePassword', // Update to match your route
+                data: JSON.stringify(formData),
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.success) {
+                        // Success: Display message
+                        $('#message').html('<div class="alert alert-success">' + response.message + '</div>');
+                    } else {
+                        // Error: Display message
+                        $('#message').html('<div class="alert alert-danger">' + response.message + '</div>');
+                    }
+                },
+                error: function () {
+                    // Handle unexpected errors
+                    $('#message').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+                }
+            });
+        });
+    });
+</script>
+

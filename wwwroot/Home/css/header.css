@@ -1,0 +1,288 @@
+﻿
+.header .container .search button {
+    background-color: transparent;
+    outline: none;
+    border: 0 solid;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    padding: 0 10px;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+#notificationList{
+    padding:0!important;
+}
+    #notificationList li {
+         padding: 13px;
+        border-bottom: 1px solid;
+        cursor:pointer;
+    }
+        #notificationList li:hover {
+            background: aliceblue;
+        }
+
+        .header .container .search button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+    .header .container .search button i {
+        color: #fff;
+    }
+
+.header .container .user {
+    font-weight: 800;
+}
+
+    .header .container .user .icon a {
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        -webkit-transition: all 0.2s linear;
+        -moz-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+    }
+
+        .header .container .user .icon a i {
+            color: #fff;
+        }
+
+        .header .container .user .icon a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+.header .container .search,
+.header .container .user {
+    float: left;
+}
+
+.Dropdown::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    top: 10px;
+    margin-left: 0;
+    transition: 0.2s;
+    border: none;
+    background: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title" aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"%3E%3Ctitle%3EAngle Down%3C/title%3E%3Cdesc%3EA line styled icon from Orion Icon Library.%3C/desc%3E%3Cpath data-name="layer1" fill="none" stroke="rgba(0, 0, 0, 0.5)" stroke-miterlimit="10" stroke-width="7" d="M20 26l11.994 14L44 26" stroke-linejoin="round" stroke-linecap="round"%3E%3C/path%3E%3C/svg%3E') 100% no-repeat;
+}
+
+.nav-item.active .nav-link {
+    color: var(--color_1) !important;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+    color: var(--color_1) !important;
+}
+
+
+.sign {
+    font-family: vremenagrotesk, sans-serif;
+    font-weight: 600;
+    padding: 0.5rem 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color :var(--icon-color);
+    text-decoration:none;
+}
+
+    .sign:hover {
+        color: var(--color-1);
+    }
+
+.input-parent:focus-within {
+    border-bottom: 2px solid black !important;
+}
+
+.rounded-img {
+    width: 50px;
+    height: 50px;
+    padding: 1px;
+    border: 1px solid var(--color-1);
+}
+nav{
+    padding:0!important;
+}
+.profile {
+    padding: 5px;
+    gap:10px;
+    border: 1px solid;
+    border-radius: 4px;
+    border-color: var(--color-1);
+}
+
+.popLi {
+    padding: 6px 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+    .popLi:hover {
+        background-color: rgb(178, 177, 175);
+    }
+
+.indicator {
+    background: #3f80ea;
+    border-radius: 50%;
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+    color: #fff;
+    display: block;
+    font-size: 0.675rem;
+    height: 18px;
+    padding: 1px;
+    position: absolute;
+    right: 0px;
+    text-align: center;
+    top: 0;
+    transition: top 0.1s ease-out;
+    width: 18px;
+}
+
+.nav-link {
+    padding-right: 1.3rem !important;
+    position: relative;
+    color: rgba(0, 0, 0, 0.5);
+    padding-left: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 1rem;
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+    font-family: vremenagrotesk, sans-serif;
+    transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+.open {
+    transform: rotateX(0deg);
+    opacity: 1;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; /* Ensures the navbar is above other content */
+    box-shadow: 0 1px 9px 0 #a3a0a0; /* Keeps the shadow effect */
+}
+
+.navbar {
+    transition: all 0.3s ease; /* Smooth transition for all properties */
+}
+
+.navbar-toggler:focus {
+    box-shadow: none !important;
+}
+p{
+    margin:0!important;
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notification-drop, .message-drop {
+    font-family: 'Ubuntu', sans-serif;
+    color: #444;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+    .notification-drop .item, .message-drop .item {
+        padding: 10px;
+        font-size: 18px;
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .notification-drop .item:hover, .message-drop .item:hover {
+            cursor: pointer;
+        }
+
+        .notification-drop .item i, .message-drop .item i {
+            margin-left: 10px;
+        }
+
+        /* Initially, the dropdown is hidden and rotated */
+        .notification-drop .item ul, .message-drop .item ul {
+            transform: rotate(-90deg);
+            position: absolute;
+            top: 100%;
+            background: #fff;
+            left: -200px;
+            right: 0;
+            z-index: 1;
+            border-top: 1px solid #ddd;
+            transform: rotateX(-90deg); /* Start hidden with rotate */
+            transform-origin: top center; /* Pivot at the top */
+            opacity: 0; /* Hidden initially */
+            transition: all 0.3s ease; /* Smooth transition for rotation and opacity */
+        }
+
+            /* When dropdown is shown, it should rotate back to 0deg and be visible */
+            .notification-drop .item ul.show, .message-drop .item ul.show {
+                transform: rotateX(0deg); /* Reset the rotation */
+                opacity: 1; /* Make it visible */
+            }
+
+            .notification-drop .item ul li, .message-drop .item ul li {
+                font-size: 16px;
+                padding: 15px 0 15px 25px;
+            }
+
+                .notification-drop .item ul li:hover, .message-drop .item ul li:hover {
+                    background: #ddd;
+                    color: rgba(0, 0, 0, 0.8);
+                }
+
+@@media screen and (min-width: 500px) {
+    .notification-drop, .message-drop {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .notification-drop .item, .message-drop .item {
+            border: none;
+        }
+}
+
+.notification-bell, .message-bell {
+    font-size: 20px;
+}
+
+.btn__badge {
+    background: #FF5D5D;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+    padding: 3px 10px;
+    border-radius: 50%;
+}
+
+.notification-text, .message-text {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+    .notification-text span, .message-text span {
+        float: right;
+    }
+
+
+
+.active {
+    color: var(--color-1);
+    background:inherit!important;
+}
+

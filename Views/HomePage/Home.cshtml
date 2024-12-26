@@ -1,0 +1,637 @@
+﻿
+  @{
+      Layout = "_LAYOUT.cshtml";
+}
+
+  <header style="margin:0!important;">
+      @Html.Partial("NavWithoutLogin")
+
+  </header>
+
+
+
+<div>
+
+
+      <div class="py-5" style="
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        ">
+            <div class="">
+                <h4 style="color: black;font-weight: 600;">What are we presenting?</h4>
+                <h5 style="
+              width: 80%;
+              margin: auto;
+              color: var(--icon-color);
+              padding: 8px;
+              text-align: center;
+            ">
+                    offers a wide range of properties to help individuals and businesses
+                    find the perfect space to live, work, or invest. With advanced tools
+                    and expert guidance, we make the property search and buying process
+                    faster.
+                </h5>
+                <div class="d-flex p-4 justify-content-between" style="flex-wrap: wrap;background: #f7f7f7;margin-top: 40px;">
+                    <div class="card-offer">
+                        <img src="~/Static Images/buy-home.png" alt="Buy Home" />
+                        <h5>Find Your Perfect Home</h5>
+                        <p>
+                            We offer a comprehensive selection of homes for sale, from cozy apartments to luxurious estates, ensuring you find the perfect fit.
+                        </p>
+                    </div>
+
+                    <div class="card-offer">
+                        <img src="~/Static Images/sale-home.png" alt="Properties for Sale" />
+                        <h5>Explore Investment Opportunities</h5>
+                        <p>
+                            Our platform helps you discover lucrative real estate investment opportunities, whether you're looking for residential or commercial properties.
+                        </p>
+                    </div>
+
+                    <div class="card-offer">
+                        <img src="~/Static Images/rent.png" alt="Rental Properties" />
+                        <h5>Discover Rental Properties</h5>
+                        <p>
+                            Browse a wide range of rental properties, from short-term stays to long-term leases, to find the ideal space for your needs.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+<!-- Features Section -->
+<section class="features">
+    <h2>Our Features</h2>
+    <p>Explore the tools we offer to simplify your real estate experience.</p>
+    <div class="card-container">
+        <div class="card">
+            <i class="bi bi-binoculars" style="font-size:xx-large;color:black"></i>
+            <h3 style="color:var(--app-bg)">Browse Properties</h3>
+            <p>Find properties that match your criteria.</p>
+        </div>
+        <div class="card">
+            <i class="bi bi-bank" style="font-size:xx-large;color:black"></i>
+            <h3 style="color:var(--app-bg)">Save Favorites</h3>
+            <p>Keep track of your favorite listings.</p>
+        </div>
+        <div class="card">
+            <i class="bi bi-coin" style="font-size:xx-large;color:black"></i>
+            <h3 style="color:var(--app-bg)">Cashback Rewards</h3>
+            <p>Earn rewards on your purchases.</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div class="step">
+            <i class="bi bi-search" style="font-size:xx-large;color:var(--app-bg);"></i>
+            <h3>Search</h3>
+            <p>Search for properties based on location and budget.</p>
+        </div>
+        <div class="step">
+            <i class="bi bi-pin-angle" style="font-size:xx-large;color:var(--app-bg);"></i>
+            <h3>Book Appointments</h3>
+            <p>Schedule visits with just a click.</p>
+        </div>
+        <div class="step">
+            <i class="bi bi-bag-fill" style="font-size:xx-large;color:var(--app-bg);"></i>
+            <h3>Purchase</h3>
+            <p>Complete the deal securely and conveniently.</p>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section class="about-us">
+    <img src="~/Static Images/logo-with-name.png" alt="About Us">
+    <div>
+        <h2>About Real Estate</h2>
+        <p>
+            At Cobra Real Estate, we are dedicated to providing our clients with unparalleled service and expertise.
+            With years of experience in the real estate industry, we strive to make property transactions smooth and
+            hassle-free.
+        </p>
+    </div>
+</section>
+
+<!-- Popular Categories Section -->
+<section class="categories">
+    <h2>Popular Categories</h2>
+    <div class="category-container">
+        <a class="category" href="@Url.Action("PropertyList", "HomePage")" style="text-decoration:none">
+        <div >Luxury Villas</div>
+        </a>
+
+        <a class="category" href="@Url.Action("PropertyList", "HomePage")" style="text-decoration:none">
+        <div >Family Homes</div>
+        </a>
+        <a class="category" href="@Url.Action("PropertyList", "HomePage")" style="text-decoration:none">
+        <div >Commercial Spaces</div>
+       </a>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        How do I save properties?
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Click the "Save" button on the property page to add it to your favorites.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Can I schedule property viewings?
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+                <div class="card-body">
+                    Yes, you can book appointments directly from the property page.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        What payment methods do you accept?
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
+                <div class="card-body">
+                    We accept credit cards, bank transfers, and wallet payments.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        How can I contact support?
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#faqAccordion">
+                <div class="card-body">
+                    You can reach us through the contact form below or call our support line at +1-800-555-COBRA.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        What happens if I buy a property?
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#faqAccordion">
+                <div class="card-body">
+                    When you purchase a property, 1% of the price will be deducted from your wallet as a service fee.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="contact d-flex">
+    <div>
+    <h2>Contact Us</h2>
+    <p>Have questions? Reach out to our support team,
+        <br/>
+        and we'll get back to you shortly.</p>
+    </div>
+    <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+
+</section>
+
+
+
+
+
+
+<script>
+    class HomeComponent {
+  constructor() {
+    this.imageElement = null;
+    this.titleElement = null;
+    this.descriptionElement = null;
+
+    // Bind event listeners
+    document.addEventListener('DOMContentLoaded', () => this.ngOnInit());
+    window.addEventListener('load', () => this.ngAfterViewInit());
+    document.addEventListener('mousemove', (event) => this.onMouseMove(event));
+  }
+
+  ngOnInit() {
+    this.imageElement = document.getElementById('floatingImage');
+  }
+
+  ngAfterViewInit() {
+    this.imageElement = document.getElementById('floatingImage');
+    this.setupScrollAnimation();
+    this.animateImage();
+  }
+
+  animateImage() {
+    if (this.imageElement) {
+      // Add the class to start the animation
+      this.imageElement.classList.add('image-visible');
+    }
+  }
+
+  setupScrollAnimation() {
+    const elementsToAnimate = document.querySelectorAll(
+      '.hidden-title, .hidden-description'
+    );
+    const cards = document.querySelectorAll('.card-offer');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    cards.forEach(card => observer.observe(card));
+    elementsToAnimate.forEach(el => observer.observe(el));
+  }
+
+  onMouseMove(event) {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const imageX = (windowWidth / 2 - mouseX) / 10;
+    const imageY = (windowHeight / 2 - mouseY) / 10;
+
+
+    if (this.imageElement) {
+      this.imageElement.style.transform = `translate(${imageX}px, ${imageY}px)`;
+    }
+  }
+}
+
+// Instantiate the component
+const homeComponent = new HomeComponent();
+
+</script>
+
+    <style>
+  
+
+        a {
+            text-decoration: none;
+        }
+
+
+
+        /* Features Section */
+        .features {
+            padding: 60px 20px;
+            background: white;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .features p {
+            color: #7d7d7d;
+            margin-bottom: 40px;
+        }
+
+        .features .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .features .card {
+            background: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 30px;
+            flex: 1 1 calc(30% - 20px);
+            max-width: 30%;
+            transition: transform 0.3s;
+        }
+
+        .features .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .features .card img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+        .features .card h3 {
+            font-size: 1.5rem;
+            color: #4e54c8;
+        }
+
+        .features .card p {
+            color: #7d7d7d;
+        }
+  /* How It Works Section */
+  .how-it-works {
+            background: #f9f9f9;
+            padding: 60px 20px;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .how-it-works .steps {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .how-it-works .step {
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            padding: 30px;
+            flex: 1 1 calc(30% - 20px);
+            max-width: 30%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .how-it-works .step img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+        .how-it-works .step h3 {
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .how-it-works .step p {
+            color: #7d7d7d;
+        }
+
+        /* About Us Section */
+        .about-us {
+            background: #f9f9f9;
+            padding: 60px 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+   
+
+        .about-us div {
+            max-width: 500px;
+        }
+
+        .about-us h2 {
+            color: #4e54c8;
+        }
+
+        .about-us p {
+            color: #555;
+        }
+
+        /* Popular Categories Section */
+        .categories {
+            padding: 60px 20px;
+            background: #4e54c8;
+            color: white;
+            text-align: center;
+        }
+
+        .categories h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .categories .category-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .categories .category {
+            background: white;
+            color: #4e54c8;
+            border-radius: 10px;
+            padding: 30px;
+            flex: 1 1 calc(30% - 20px);
+            max-width: 30%;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .categories .category:hover {
+            background: #8f94fb;
+            color: white;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 60px 20px;
+            background: white;
+            text-align: center;
+        }
+
+        .faq h2 {
+            color: #4e54c8;
+        }
+
+        .faq .question {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .faq .question h3 {
+            margin: 0;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .faq .question h3:hover {
+            color: #8f94fb;
+        }
+
+        .faq .answer {
+            display: none;
+            padding-left: 20px;
+            color: #555;
+        }
+
+        .faq .question.open .answer {
+            display: block;
+        }
+        /* Contact Section */
+        .contact {
+            padding: 60px 20px;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            color: #4e54c8;
+            margin-bottom: 20px;
+        }
+
+        .contact p {
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .contact form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact form input,
+        .contact form textarea,
+        .contact form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .contact form button {
+            background: #4e54c8;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+          /* Book Appointment Section */
+          .appointment {
+            padding: 60px 20px;
+            background: white;
+            text-align: center;
+        }
+
+        .appointment h2 {
+            font-size: 2.5rem;
+            color: #4e54c8;
+            margin-bottom: 20px;
+        }
+
+        .appointment p {
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .appointment form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .appointment form select,
+        .appointment form input,
+        .appointment form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .appointment form button {
+            background: #4e54c8;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .appointment form button:hover {
+            background: #8f94fb;
+        }
+
+        /* Footer Section */
+        .footer {
+            background: #4e54c8;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .about-us, .categories .category {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

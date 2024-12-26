@@ -1,0 +1,378 @@
+﻿<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+@{
+    Layout = "_AdminLayout.cshtml";
+}
+
+@model Real_State.Controllers.PropertySearchModel
+
+
+@{
+    Layout = "_AdminLayout.cshtml";
+    var count = Model.AgentModels.Count();
+
+}
+
+<style>
+    .text-description {
+        padding: 25px 0;
+        font-size: 15px;
+        max-height: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: inherit;
+        white-space: nowrap;
+        max-width: 300px;
+    }
+    /* Chips Input */
+    .chips_input {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.5rem;
+        --primary: #fff;
+        --secondary: #111;
+        width: 50%;
+        --invalid: #f00;
+        color: var(--secondary);
+    }
+
+        .chips_input > label {
+            opacity: 0.8;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 12px;
+            color: inherit;
+        }
+
+        .chips_input > p {
+            font-size: 0.8rem;
+            opacity: 0.75;
+            margin: 0 0.25rem;
+            color: inherit;
+        }
+
+        .chips_input > div.inner {
+            width: 100%;
+            min-height: 50px;
+            background-color: var(--primary);
+            border: 1px solid #3333;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            border-radius: 5px;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+            .chips_input > div.inner > input {
+                border: none;
+                outline: none;
+                font-size: 1rem;
+                position: relative;
+                background: transparent;
+                color: var(--secondary);
+            }
+
+    span.chip {
+        padding: 0.25rem 0.5rem;
+        background: #d4e1ed;
+        border-radius: 0.5rem;
+        color: black;
+        display: flex;
+        text-align: center;
+        font-size: 15px;
+    }
+
+        span.chip > button {
+            border: none;
+            background: transparent;
+            color: transparent;
+        }
+
+            span.chip > button > i {
+                font-family: fontawesome;
+                cursor: pointer;
+                color: #000000;
+            }
+
+    span.limit {
+        float: right;
+    }
+</style>
+
+<form method="get" action="@Url.Action("SoldProperties", "Admin")" id="locationSearchForm"
+      style="background-image: linear-gradient(135deg, #0099a1, rgba(62, 42, 211, 0.8)), url(https://luxus.wplistingthemes.com/wp-content/uploads/2021/06/title-bg-1.webp); height: 200px; display: flex;">
+
+    <div class="form-group d-flex align-items-center" style="margin: auto; background: white; padding: 10px; justify-content: space-between; width: 75%; border-radius: 5px;">
+
+        <!-- Location Input (Hidden) -->
+        <input type="text" name="location" id="location" hidden class="form-control" value="@Model.SelectedLocation" placeholder="Search by location..." readonly>
+
+        <!-- Purpose Radio Buttons using Razor's RadioButtonFor -->
+        <!-- Optional: Location search input -->
+        <div class="wrapper w-50">
+            <div class="chips_input w-100" data-limit="15">
+                <div class="inner">
+                    <input type="text" id="myinput" placeholder="Search by location" name="myinput">
+                </div>
+            </div>
+        </div>
+
+        <input type="text" id="sortInput" asp-for="Sort" hidden>
+        <input type="text" id="type-value" asp-for="Type" hidden>
+
+
+
+        <button type="submit" class="search" style="border: none;padding: 14px 45px;background:#01989d;font-weight: 600;color: white;border-radius: 5px;" routerLink="/search">
+            Search
+        </button>
+
+    </div>
+</form>
+
+
+
+
+<div class="container">
+    <div class="row mt-4">
+
+        <div class="row" style="
+    background: white;
+    padding: 20px;
+">
+
+            <div class="p-4">
+                @for (int i = 0; i < count; i++)
+                {
+                    var property = Model.Properties[i];
+                    var savedStatus = Model.PropertiesSavedStatus?.FirstOrDefault(p => p.Id == property.Id)?.Status ?? false;
+
+                    <div class="card" style="display: flex;flex-direction: row;padding: 0">
+                        <div style="position:relative">
+                            <img src="@property.MainImagePath" class="card-img-top" alt="Property Image" style="max-height: 300px;width:100%" />
+                        </div>
+                        <div class="card-body" style="justify-content: space-between;display: flex;flex-direction: column;">
+                            <h5 class="card-title">
+                                <small style="font-size: 0.7em">EGP</small> @property.Price
+                            </h5>
+                            <div class="card-text">
+                                <p class="type">@property.Type</p>
+
+                                <span class="icon-text">
+
+                                    <svg class="room" xmlns="http://www.w3.org/2000/svg" height="24px"
+                                         viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                                        <path d="M280-600q-33 0-56.5-23.5T200-680q0-33 23.5-56.5T280-760q33 0 56.5 23.5T360-680q0 33-23.5 56.5T280-600ZM200-80q-17 0-28.5-11.5T160-120q-33 0-56.5-23.5T80-200v-240h120v-30q0-38 26-64t64-26q20 0 37 8t31 22l56 62q8 8 15.5 15t16.5 13h274v-326q0-14-10-24t-24-10q-6 0-11.5 2.5T664-790l-50 50q5 17 2 33.5T604-676L494-788q14-9 30-11.5t32 3.5l50-50q16-16 36.5-25t43.5-9q48 0 81 33t33 81v326h80v240q0 33-23.5 56.5T800-120q0 17-11.5 28.5T760-80H200Zm-40-120h640v-160H160v160Zm0 0h640-640Z"></path>
+                                    </svg>
+
+                                    <smal class="number">@property.Bedrooms</smal>
+                                </span>
+                                <span class="icon-text">
+
+                                    <svg class="room" xmlns="http://www.w3.org/2000/svg" height="24px"
+                                         viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                                        <path d="M80-200v-240q0-27 11-49t29-39v-112q0-50 35-85t85-35h160q23 0 43 8.5t37 23.5q17-15 37-23.5t43-8.5h160q50 0 85 35t35 85v112q18 17 29 39t11 49v240h-80v-80H160v80H80Zm440-360h240v-80q0-17-11.5-28.5T720-680H560q-17 0-28.5 11.5T520-640v80Zm-320 0h240v-80q0-17-11.5-28.5T400-680H240q-17 0-28.5 11.5T200-640v80Zm-40 200h640v-80q0-17-11.5-28.5T760-480H200q-17 0-28.5 11.5T160-440v80Zm640 0H160h640Z"></path>
+                                    </svg>
+
+                                    <small class="number">@property.Bathrooms</small>
+                                </span>
+
+                                <span class="icon-text">
+                                    <p class="type">Area</p>: <p class="number">@property.Space </p> sqft
+                                </span>
+                            </div>
+                            <p  class="text-description">@property.Description</p>
+                                                       <div class="card-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                     fill="#e8eaed">
+                                    <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"></path>
+                                </svg>
+                                <p class="location-title">@property.Location </p>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="Agent" style="display: flex;flex-direction: column;align-items: center;">
+                                   <p >
+                                        @property.SoldDescription
+                                   </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-3 col-md-2 mb-4">
+
+
+                @* price rang *@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chipContainer = document.querySelector(".chips_input .inner");
+        const inputField = document.getElementById("myinput");
+        const chipLimit = parseInt(document.querySelector(".chips_input").getAttribute("data-limit"), 10);
+        const chipAddition = '<button aria-label="remove this chip"><i class="bi bi-x-circle"></i></button>';
+        const chipList = [];  // Array to store chip values
+        const locationInput = document.getElementById("location");
+
+        updateLimiter();
+
+        // Focus on input when clicking container
+        chipContainer.addEventListener("click", () => {
+            inputField.focus();
+        });
+
+        // Handle keydown events for Enter, Tab, and comma
+        inputField.addEventListener("keydown", (e) => {
+            if (["Enter", "Tab", ","].includes(e.key)) {
+                e.preventDefault();
+                let value = inputField.value.trim();
+
+                // Remove trailing comma if it's the key pressed
+                if (e.key === ",") {
+                    value = value.slice(0, -1);
+                }
+
+                // Check if value is valid, unique, and within limit
+                if (value && !hasDuplicateChip(value) && getChipCount() < chipLimit) {
+                    makeChip(value);
+                    inputField.value = "";
+                    updateLocationInput(); // Update hidden input
+                    document.getElementById('locationSearchForm').submit();
+                }
+            } else if (e.key === "Backspace" && inputField.value.length === 0) {
+                removeLastChip();
+                updateLimiter();
+            }
+        });
+
+        // Handle removing chips on button click
+        chipContainer.addEventListener("click", (e) => {
+            if (e.target.closest("button")) {
+                const chipElement = e.target.closest(".chip");
+                const chipValue = chipElement.textContent.trim(); // Remove the "remove" button text
+                chipElement.remove();
+                updateChipList(chipValue, false); // Remove from chip list
+
+                updateLimiter();
+                updateLocationInput(); // Update hidden input
+
+                document.getElementById('locationSearchForm').submit();
+            }
+        });
+
+        // Create a new chip
+        function makeChip(text) {
+            const chip = document.createElement("span");
+            chip.classList.add("chip");
+            chip.innerHTML = `${escapeHtml(text)}${chipAddition}`;
+            chipContainer.insertBefore(chip, inputField);
+            updateChipList(text, true); // Add to chip list
+            updateLimiter();
+        }
+
+        // Count the chips
+        function getChipCount() {
+            return chipContainer.querySelectorAll(".chip").length;
+        }
+
+        // Check for duplicate chips
+        function hasDuplicateChip(value) {
+            const chips = chipContainer.querySelectorAll(".chip");
+            return Array.from(chips).some(chip => chip.textContent.trim() === value.trim());
+        }
+
+        // Remove the last chip
+        function removeLastChip() {
+            const lastChip = chipContainer.querySelector(".chip:last-of-type");
+            if (lastChip) {
+                const chipValue = lastChip.textContent.trim().slice(0, -1); // Get chip value without remove button
+                lastChip.remove();
+                updateChipList(chipValue, false); // Remove from chip list
+            }
+        }
+
+        // Update chip list in the chipList array (adding/removing)
+        function updateChipList(chipValue, isAdding) {
+            // Trim the chip value to avoid issues with leading/trailing spaces
+
+
+            let chipIndex = -1;  // Default to -1 (not found)
+
+            // Use forEach to iterate and find the chip's index
+            chipList.forEach((chip, index) => {
+                console.log('chipValue >>', chipValue, 'chip >>', chip,);
+
+                if (chip.trim() == chipValue) {
+
+                    chipIndex = index;  // Set the index if found
+                }
+            });
+
+            // If adding and chip is not already in the list
+            if (isAdding && chipIndex === -1) {
+                chipList.push(chipValue); // Add chip to list
+            }
+
+            // If removing and chip is found in the list
+            if (!isAdding && chipIndex !== -1) {
+                chipList.splice(chipIndex, 1); // Remove chip from list
+            }
+            console.log(chipList);
+
+            // Update the hidden location input field with the current chip list
+        }
+        function updateLocationInput() {
+            console.log(chipList)
+            locationInput.value = chipList.join(",");  // Set the value as a comma-separated list of chips
+        }
+
+        // Update chip limit display
+        function updateLimiter() {
+            const limitLabel = document.querySelector(".chips_input > label > .limit");
+            const currentCount = getChipCount();
+            const remaining = chipLimit - currentCount;
+
+            if (limitLabel) {
+                limitLabel.textContent = `(${remaining}/${chipLimit})`;
+                limitLabel.style.color = remaining === 0 ? "var(--invalid)" : "inherit";
+            }
+        }
+
+
+
+        // Escape HTML to prevent injection
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Populate chips from SelectedLocation after page reload
+        const selectedLocation = "@Model.SelectedLocation";
+        if (selectedLocation) {
+            const locations = selectedLocation.split(",").map(location => location.trim());
+            locations.forEach(location => {
+                makeChip(location);
+            });
+        }
+
+
+    });
+
+</script>

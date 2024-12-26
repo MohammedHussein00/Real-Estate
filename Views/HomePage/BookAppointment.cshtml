@@ -1,0 +1,192 @@
+﻿@model Real_State.ViewModels.PropertyAppointmentViewModel
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Book Appointment";
+    bool isUserLoggedIn = User.Identity.IsAuthenticated;
+    string userId = isUserLoggedIn ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center text-primary mb-4">Book an Appointment</h1>
+
+        <!-- Property Details -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h3 class="text-secondary">@Model.Property.Title</h3>
+                <p><strong>Location:</strong> @Model.Property.Location</p>
+                <p><strong>Price:</strong> $@Model.Property.Price</p>
+                <p><strong>Description:</strong> @Model.Property.Description</p>
+            </div>
+        </div>
+
+        <!-- Appointment Type -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <label for="appointmentType"><strong>Appointment Type:</strong></label>
+                <select id="appointmentType" class="form-control mb-3" onchange="reloadPageForType()" style="pointer-events:none;">
+                    @if (Model.AppointmentType.ToLower() == "view")
+                    {
+                        <option value="view" selected>View Property</option>
+                    }else{
+                    <option value="buy" selected>Buy Property</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Time Slots -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h4 class="text-secondary">Select Available Time Slots</h4>
+                @for (int i = 0; i < 7; i++)
+                {
+                    var day = DateTime.Today.AddDays(i);
+                    var bookedSlots = Model.Appointments
+                    .Where(a => a.AppointmentDate.Date == day.Date)
+                    .Select(a => new { a.AppointmentTime, a.UserId });
+
+                    <div class="form-group">
+                        <label><strong>@day.ToString("dddd, yyyy-MM-dd"):</strong></label>
+                        <select id="timeSlotDropdown_@i" class="form-control time-dropdown" data-day="@day.ToString("yyyy-MM-dd")">
+                            <option value="">-- Select Time Slot --</option>
+                            @for (int hour = 8; hour <= 20; hour++)
+                            {
+                                string timeSlot = hour < 10 ? $"0{hour}:00" : $"{hour}:00";
+                                var slotInfo = bookedSlots.FirstOrDefault(s => s.AppointmentTime.ToString(@"hh\:mm") == timeSlot);
+                                bool isBooked = slotInfo != null;
+                                bool isAppointmentUser = isBooked && slotInfo.UserId == userId;
+
+                                if (isBooked)
+                                {
+                                    if (isAppointmentUser)
+                                    {
+                                        <option value="@timeSlot" selected>@timeSlot Booked (You)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@timeSlot" disabled>@timeSlot Booked</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@timeSlot">@timeSlot</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Book Button -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <button class="btn btn-primary btn-block" onclick="bookAppointment()">Book Appointment</button>
+                <div id="message" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const propertyId = '@Model.Property.Id';
+        const userId = '@userId';
+
+        // Reload page when booking type changes
+        function reloadPageForType() {
+            const appointmentType = $('#appointmentType').val();
+            window.location.href = `/HomePage/BookAppointment/${propertyId}/${appointmentType}`;
+        }
+
+        // Track the selected day and time slot
+        let selectedDay = null;
+        let selectedTimeSlot = null;
+
+        // Book an appointment
+        function bookAppointment() {
+            if (!selectedDay || !selectedTimeSlot) {
+                alert("Please select a time slot.");
+                return;
+            }
+
+            const appointmentType = $('#appointmentType').val();
+
+            $.ajax({
+                url: `/HomePage/BookAppointment/${propertyId}/${appointmentType}`,
+                method: 'POST',
+                data: {
+                    userId: userId,
+                    date: selectedDay,
+                    time: selectedTimeSlot
+                },
+                success: function (response) {
+                    $('#message').html(
+                        `<div class="alert ${response.success ? 'alert-success' : 'alert-danger'}">${response.message}<br/>You can cancel it within one hour.<a href='/User/UserAppointments'>Click here to cancel it!</a></div>`
+                    );
+
+                    if (response.success) {
+                        // Mark the newly booked time slot as booked (for this user)
+                        const $dropdown = $(`select.time-dropdown[data-day="${selectedDay}"]`);
+                        $dropdown.find(`option[value="${selectedTimeSlot}"]`).text(`${selectedTimeSlot} Booked (You)`).prop('disabled', true);
+
+                        // Retain the selection
+                        $dropdown.val(selectedTimeSlot).prop('disabled', false);
+
+                        // Clear global selections
+                        selectedDay = null;
+                        selectedTimeSlot = null;
+                    }
+                },
+                error: function () {
+                    $('#message').html('<div class="alert alert-danger">An error occurred while booking the appointment.</div>');
+                }
+            });
+        }
+
+        // Update selected day and time on dropdown change
+        $(document).on('change', '.time-dropdown', function () {
+            const day = $(this).data('day');
+            const time = $(this).val();
+
+            // Update selected day and time
+            selectedDay = day;
+            selectedTimeSlot = time;
+        });
+
+        // Handle dropdown change
+        $(document).on('change', '.time-dropdown', function () {
+            const day = $(this).data('day');
+            const time = $(this).val();
+
+            // Clear previous selections if a new day/time is selected
+            if (selectedDay && selectedDay !== day) {
+                clearSelections();
+            }
+
+            // Update selected day and time
+            selectedDay = day;
+            selectedTimeSlot = time;
+
+            // Disable other time slots across different days
+            // $('.time-dropdown').not(`[data-day="${selectedDay}"]`).prop('disabled', true);
+        });
+
+        // Clear previous selections
+        function clearSelections() {
+            $('.time-dropdown').val('').prop('disabled', false);
+            selectedDay = null;
+            selectedTimeSlot = null;
+        }
+    </script>
+</body>
+</html>

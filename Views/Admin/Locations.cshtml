@@ -1,0 +1,124 @@
+﻿@model LocationViewModel
+
+@{
+    ViewData["Title"] = "Manage Locations";
+    Layout = "_AdminLayout.cshtml";
+}
+
+<div class="container p-3">
+    <h2>Manage Locations</h2>
+
+    <!-- Cairo Locations Section -->
+    <div>
+        <h3>Cairo Locations</h3>
+        <div class="form-group">
+            <label for="NewCairoLocation"> Cairo Location</label>
+            <input type="text" class="form-control" id="NewCairoLocation" />
+            <br />
+            <button type="button" class="btn btn-primary mt-3" onclick="addLocation('Cairo')">Add Location</button>
+        </div>
+        <ul id="cairoLocationList" class="list-group mt-3">
+            @foreach (var location in Model.CairoLocations)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>@location.Name</span>
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            onclick="removeLocation(this, 'Cairo')"
+                    @(location.IsUsed ? "disabled" : "")>
+                        Remove
+                    </button>
+                </li>
+            }
+        </ul>
+
+    </div>
+
+    <hr />
+
+    <!-- Giza Locations Section -->
+    <div>
+        <h3>Giza Locations</h3>
+        <div class="form-group">
+            <label for="NewGizaLocation">   Giza Location</label>
+            <input type="text" class="form-control" id="NewGizaLocation" />
+            <br />
+            <button type="button" class="btn btn-primary mt-3" onclick="addLocation('Giza')">Add Location</button>
+        </div>
+        <ul id="gizaLocationList" class="list-group mt-3">
+            @foreach (var location in Model.GizaLocations)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>@location.Name</span>
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            onclick="removeLocation(this, 'Giza')"
+                    @(location.IsUsed ? "disabled" : "")>
+                        Remove
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <br />
+    <br />
+    <hr />
+    <!-- Save Changes Button -->
+    <button type="button" class="btn btn-success mt-4" onclick="saveChanges()">Save Changes</button>
+</div>
+
+@section Scripts {
+    <script>
+        let cairoLocations = @Html.Raw(Json.Serialize(Model.CairoLocations.Select(l => l.Name).ToList()));
+        let gizaLocations = @Html.Raw(Json.Serialize(Model.GizaLocations.Select(l => l.Name).ToList()));
+
+        function addLocation(region) {
+            let newLocationInput = document.getElementById(`New${region}Location`);
+            let locationList = document.getElementById(`${region.toLowerCase()}LocationList`);
+            let locations = region === 'Cairo' ? cairoLocations : gizaLocations;
+
+            if (newLocationInput.value && !locations.includes(newLocationInput.value.trim())) {
+                let li = document.createElement('li');
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `<span>${newLocationInput.value.trim()}</span>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeLocation(this, '${region}')">Remove</button>`;
+                locationList.appendChild(li);
+                locations.push(newLocationInput.value.trim());
+                newLocationInput.value = '';
+            } else {
+                alert('Invalid or duplicate location!');
+            }
+        }
+
+        function removeLocation(button, region) {
+            let li = button.parentNode;
+            let locationText = li.querySelector("span").textContent;
+            let locations = region === 'Cairo' ? cairoLocations : gizaLocations;
+
+            let locationItem = locations.find(location => location.Name === locationText);
+            if (locationItem && locationItem.IsUsed) {
+                alert('Cannot remove a location that is currently used by users.');
+                return;
+            }
+
+            locations.splice(locations.indexOf(locationItem), 1);
+            li.remove();
+        }
+
+
+        function saveChanges() {
+            fetch('@Url.Action("SaveLocations", "Admin")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    CairoLocations: cairoLocations,
+                    GizaLocations: gizaLocations
+                })
+            })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(err => alert('Error saving changes.'));
+        }
+    </script>
+}

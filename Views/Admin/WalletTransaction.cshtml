@@ -1,0 +1,225 @@
+﻿@model Real_State.Models.WalletViewModel
+@{
+    Layout = "_AdminLayout.cshtml";
+}
+<style>
+
+    .wallet-container {
+        width: 100%;
+        margin: 50px auto;
+        padding: 25px;
+        background-color: #f3f6f9;
+        border-radius: 15px;
+    }
+
+    .wallet-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .wallet-header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .wallet-header .wallet-balance {
+            font-size: 1.8rem;
+            color: #28a745;
+            margin-top: 10px;
+        }
+
+    .filter-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .transaction-card {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .transaction-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .transaction-card .details {
+            max-width: 70%;
+        }
+
+        .transaction-card h5 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .transaction-card p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .transaction-card .transaction-amount {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+            .transaction-card .transaction-amount.negative {
+                color: #dc3545;
+            }
+
+            .transaction-card .transaction-amount.positive {
+                color: #28a745;
+            }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .wallet-actions {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+        .wallet-actions button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+    /* Smooth transition styles */
+    .fade-out {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    }
+
+    .fade-in {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+    }
+</style>
+
+
+<div class="wallet-container">
+    <div class="d-flex justify-content-between">
+        <div class="wallet-header">
+            <h5>Admin Wallet Overview</h5>
+            <div class="wallet-balance">Balance: @Model.Balance.ToString("F2") EGP</div>
+        </div>
+        <div class="wallet-actions">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
+        </div>
+    </div>
+
+    <div class="filter-bar mt-3">
+        <label for="transaction-search" class="form-label">Search</label>
+        <input type="text" id="transaction-search" class="form-control" placeholder="Search transactions" onkeyup="filterTransactions()">
+    </div>
+
+    <div id="transaction-list" class="transactions-list fade-in">
+        @foreach (var transaction in Model.Transactions)
+        {
+            <div class="transaction-card">
+                <div class="details">
+                    <h5>@transaction.Type</h5>
+                    <p>@transaction.Description - @transaction.TransactionDate.ToString("dd/MM/yyyy")</p>
+                </div>
+                <div class="transaction-amount @(transaction.Amount < 0 ? "negative" : "positive")">
+                    @(transaction.Amount < 0 ? "-" : "+")£@Math.Abs(transaction.Amount).ToString("F2") EGP
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal for Add Funds -->
+<div id="addFundsModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Funds</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form id="updateBalanceForm">
+
+                    <div class="mb-3">
+                        <label for="fundsAmount" class="form-label">Amount</label>
+                        <input id="fundsAmount" name="Amount" type="number" class="form-control" required />
+                    </div>
+
+                    <button type="button" id="submitBalanceForm" class="btn btn-primary">Submit</button>
+                </form>
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="spinner-border text-primary mt-3" style="display: none;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('submitBalanceForm').addEventListener('click', function () {
+        // Show the loading spinner
+        const spinner = document.getElementById('loadingSpinner');
+        spinner.style.display = 'block';
+
+        // Get the amount input value
+        const amountInput = document.getElementById('fundsAmount');
+        const amount = parseFloat(amountInput.value);
+
+        // Basic validation for the amount
+        if (isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid amount greater than 0.");
+            spinner.style.display = 'none';
+            return;
+        }
+
+        // Prepare the form data
+        const params = new URLSearchParams();
+        params.append("amount", amount);
+
+        // Perform the AJAX request using fetch
+        fetch('/Admin/UpdateBalance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params.toString()
+        })
+            .then(response => {
+                spinner.style.display = 'none'; // Hide spinner
+                if (!response.ok) throw new Error("Network response was not ok.");
+                return response.json(); // Parse the JSON response
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message || "Transaction added successfully!");
+                    location.reload(); // Reload to fetch updated data
+                } else {
+                    alert(data.message || "An error occurred.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                spinner.style.display = 'none'; // Hide spinner
+                alert("An unexpected error occurred.");
+            });
+    });
+</script>

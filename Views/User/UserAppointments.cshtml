@@ -1,0 +1,104 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_userLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Appointments</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center text-primary mb-4">Your Appointments</h1>
+
+        <!-- Appointments Table -->
+        <div class="card shadow">
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Property</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-danger">No appointments found.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            int index = 1;
+                            foreach (var appointment in Model)
+                            {
+                                var isCancelable = (DateTime.Now - appointment.AppointmentDate).TotalHours <= 1;
+
+                                <tr>
+                                    <td>@index</td>
+                                    <td><a href="/HomePagePropertyDetails/@appointment.Property.Id">@appointment.Property.Title</a> </td>
+                                    <td >@appointment.Property.Location</td>
+                                    <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@appointment.AppointmentDate.ToString("hh:mm tt")</td>
+                                    <td>@appointment.AppointmentType</td>
+                                    <td>
+                                        @if (isCancelable)
+                                        {
+                                            <button class="btn btn-danger btn-sm cancel-btn"
+                                                    data-id="@appointment.Id">
+                                                Cancel
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Non-Cancelable</span>
+                                        }
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Handle cancel button click
+            $('.cancel-btn').on('click', function () {
+                const appointmentId = $(this).data('id');
+
+                if (confirm("Are you sure you want to cancel this appointment?")) {
+                    $.ajax({
+                        url: `/User/CancelAppointment/${appointmentId}`,
+                        type: 'POST',
+                        success: function (response) {
+                            alert(response.message);
+                            if (response.success) {
+                                location.reload();
+                            }
+                        },
+                        error: function () {
+                            alert("An error occurred while canceling the appointment.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

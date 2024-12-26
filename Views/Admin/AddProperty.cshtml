@@ -1,0 +1,921 @@
+﻿    @model Real_State.Models.AddPropertyModel;
+    @using Newtonsoft.Json
+
+@{
+
+
+    Layout = "_AdminLayout.cshtml";
+  
+
+    // ViewBag.Title = "Your Title"; Set your title
+}
+
+<form id="propertyForm" asp-action="AddProperty" method="post" class="icon-navigation" enctype="multipart/form-data">
+  <div class="icons" id="iconsContainer"></div>
+
+    <input type="text" asp-for="Type" id="type-value" hidden />
+    <input type="text" asp-for="Purpose" id="Purpose" hidden />
+  <!-- section 1 -->
+  <div class="w-100" id="section1">
+    <div class="input-group">
+      <label for="Title">Property Title</label>
+
+      <input id="Title" asp-for="Title" type="text" placeholder="Title" class="form-control"  />
+    </div>
+    <div class="mb-3">
+      <span id="titleErrorRequired" class="text-danger"></span>
+      <span id="titleError" class="text-danger"></span>
+    </div>
+
+    <div class="input-group">
+      <label for="ownership" style="display: block">Offer Type</label>
+      <div class="form-check form-check-inline">
+        <input checked class="form-check-input" type="radio"  name="offerType" id="Sale" value="Sale" required />
+        <label class="form-check-label" for="Sale">For Sale</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="offerType" id="Rent" value="Rent" required />
+        <label class="form-check-label" for="Rent">For Rent</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <span id="offerTypeErrorRequired" class="text-danger"></span>
+    </div>
+
+        <div class="input-group">
+            <label for="hiddenDescription">Description</label>
+
+<textarea id="hiddenDescription" asp-for="Description" placeholder="Description" class="form-control" style="height:300px;"></textarea>
+        </div>
+
+    <div class="mb-3">
+      <span id="discriptionErrorRequired" class="text-danger"></span>
+      <span id="discriptionError" class="text-danger"></span>
+    </div>
+  </div>
+
+    <!-- section 2 -->
+
+  <div class="w-100" id="section2">
+        <div class="input-group">
+            <label for="Title">Property price</label>
+
+            <input id="Price" asp-for="Price" type="number" placeholder="Price" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <span id="priceErrorRequired" class="text-danger"></span>
+            <span id="priceError" class="text-danger"></span>
+        </div>
+
+
+
+
+
+
+  </div>
+
+    <!-- section 3 -->
+
+  <div class="w-100" id="section3">
+<div class="input-group">
+    <label for="Location">Location in Details</label>
+
+    <!-- Replace the input with a select dropdown -->
+    <select class="form-select" id="Location" name="Location" asp-for="Location" required>
+        <!-- Handle the default option -->
+     
+            <option value="" disabled selected>Select location </option>
+   
+
+        <!-- Cairo Regions -->
+        <optgroup label="Cairo Regions">
+            @foreach (var region in Model.CairoLocations)
+            {
+                if (Model?.Location == region)
+                {
+                    <option value="@region" selected>
+                        @region
+                    </option>
+                }
+                else
+                {
+                    <option value="@region">
+                        @region
+                    </option>
+                }
+            }
+        </optgroup>
+
+        <!-- Giza Regions -->
+        <optgroup label="Giza Regions">
+            @foreach (var region in Model.GizaLocations)
+            
+                if (Model?.Location == region)
+                {
+                    <option value="@region" selected>
+                        @region
+                    </option>
+                }
+                else
+                {
+                    <option value="@region">
+                        @region
+                    </option>
+                }
+                      
+           }
+        </optgroup>
+    </select>
+</div>
+        <div class="mb-3">
+            <span id="locationErrorRequired" class="text-danger"></span>
+            <span id="locationError" class="text-danger"></span>
+        </div>
+
+        <div class="input-group">
+            <!-- Finishing Type Dropdown -->
+            <label>Property Type</label>
+            <div class="dropdown" style="width: 100%;">
+                <!-- Hidden checkbox toggle for managing dropdown visibility -->
+                <input type="checkbox" class="dropdown__switch-type" id="type-switch" hidden />
+
+                <!-- Dropdown trigger and filter label for Finishing Type -->
+                <label for="type-switch" class="dropdown__options-filter-type">
+                    <ul class="dropdown__filter-type" role="listbox" tabindex="-1">
+                        <li class="dropdown__filter-selected-type" aria-selected="true">
+                            Select property Type
+                        </li>
+                        <li>
+                            <ul class="dropdown__select-type">
+                                <!-- Options will be added dynamically by JavaScript -->
+                            </ul>
+                        </li>
+                    </ul>
+                </label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <span id="typeError" class="text-danger"></span>
+        </div>
+ 
+       
+
+  </div>
+
+    <!-- section 4 -->
+      <div class="w-100" id="section4">
+
+
+    
+
+        <div class="input-group">
+            <label for="Title">Space</label>
+
+            <input id="Space" asp-for="Space" type="number" placeholder="Space" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <span id="spaceErrorRequired" class="text-danger"></span>
+            <span id="spaceError" class="text-danger"></span>
+        </div>
+
+
+        <div class="input-group">
+            <label for="Title">Bedrooms </label>
+
+            <input id="Bedrooms" asp-for="Bedrooms" type="number" placeholder="Bedrooms" class="form-control" />
+        </div>
+               <div class="mb-3">
+            <span id="bedroomsErrorRequired" class="text-danger"></span>
+            <span id="bedroomsError" class="text-danger"></span>
+        </div>
+        <div class="input-group">
+            <label for="Title">Bathrooms </label>
+
+            <input id="Bathrooms" asp-for="Bathrooms" type="number" placeholder="Bathrooms" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <span id="bathroomsErrorRequired" class="text-danger"></span>
+            <span id="bathroomsError" class="text-danger"></span>
+        </div>
+      </div>
+
+
+    <!-- section 5 -->
+
+  <div class="w-100" id="section5">
+        <!-- Main Image Section -->
+        <div class="image-upload-container">
+            <i class="bi bi-cloud-arrow-up text-center w-100" style="font-size: 50px; color: var(--icon-color);"></i>
+            <label for="mainImageInput" style="width:100%;text-align:center;cursor:pointer"><i class="bi bi-plus mr-1"></i>Add main image for the property</label>
+            <input id="mainImageInput" type="file" onchange="onMainImageSelected(event)" class="file-input" accept="image/*" hidden asp-for="MainImage"/>
+       
+        </div>
+
+        <div id="mainImagePreview" class="image-preview-container" style="display:none">
+            <img id="mainImage" class="uploaded-image" alt="Uploaded Main Image">
+            <button type="button" onclick="deleteMainImage()" class="delete-button">Delete Main Image</button>
+        </div>
+        <div class="mb-3">
+            <span id="mainImageError" class="text-danger"></span>
+        </div>
+        <hr>
+
+        <!-- Additional Images Section -->
+        <div id="additionalImagesSection">
+            <div id="additionalImagesPreview"></div>
+
+            <div class="image-upload-container">
+                <i class="bi bi-cloud-arrow-up text-center w-100" style="font-size: 50px; color: var(--icon-color);"></i>
+                <label for="additionalImageInput" style="width:100%;text-align:center;cursor:pointer"><i class="bi bi-plus mr-1"></i>Add additional image(s)</label>
+                <input id="additionalImageInput" type="file" onchange="onAdditionalImageSelected(event)" class="file-input" accept="image/*" asp-for="AdditionalImages" multiple hidden>
+            </div>
+        </div>
+        <div class="mb-3">
+            <span id="additionalImagesError" class="text-danger"></span>
+        </div>
+  </div>
+
+  <div class="buttons col-lg-10">
+    <button type="button" class="btn btn-primary btn_back" onclick="propertyForm.back()" id="backButton"
+      style="display: none">
+      Back
+    </button>
+    <button type="button" class="btn btn-primary btn_next" onclick="propertyForm.next()" id="nextButton"
+      style="display: none">
+      Next
+    </button>
+    <button type="button" class="btn btn-primary btn_next" onclick="propertyForm.createNewProperty()" id="addNowButton"
+      style="display: none">
+      Add now
+    </button>
+  </div>
+</form>
+
+
+
+
+
+@section Scripts {
+    <script>
+        const icons = [
+            { title: 'Main Info', iconPath: 'M160-120v-170l527-526q12-12 27-18t30-6q16 0 30.5 6t25.5 18l56 56q12 11 18 25.5t6 30.5q0 15-6 30t-18 27L330-120H160Zm80-80h56l393-392-28-29-29-28-392 393v56Zm560-503-57-57 57 57Zm-139 82-29-28 57 57-28-29ZM560-120q74 0 137-37t63-103q0-36-19-62t-51-45l-59 59q23 10 36 22t13 26q0 23-36.5 41.5T560-200q-17 0-28.5 11.5T520-160q0 17 11.5 28.5T560-120ZM183-426l60-60q-20-8-31.5-16.5T200-520q0-12 18-24t76-37q88-38 117-69t29-70q0-55-44-87.5T280-840q-45 0-80.5 16T145-785q-11 13-9 29t15 26q13 11 29 9t27-13q14-14 31-20t42-6q41 0 60.5 12t19.5 28q0 14-17.5 25.5T262-654q-80 35-111 63.5T120-520q0 32 17 54.5t46 39.5Z' },
+            { title: 'Price', iconPath: 'M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z' },
+            { title: 'Details', iconPath: 'M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z' },
+            { title: 'Featurs', iconPath: '<i class="fa-solid fa-sitemap"></i>' },
+            { title: 'Images', iconPath: 'M360-400h400L622-580l-92 120-62-80-108 140Zm-40 160q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z' }
+        ];
+        let mainImageSelected = null;
+        let additionalImages = [];
+        class PropertyForm {
+            constructor(icons) {
+                this.icons = icons;
+                this.activeIndex = 0;
+                this.formGroup = {
+                    title: '',
+                    location: '',
+                    offerType: 'Sale',
+                    propertyType: '',
+                    governorate: '',
+                    address: '',
+                    propertyDescription: '',
+                    unitType: '',
+                    region: '',
+                    ownership: 'Primary',
+                    price: '',
+                    currency: '',
+                    paymentMethod: '',
+                    paymentDescription: '',
+                    bedrooms: '',
+                    bathrooms: '',
+                    space: '',
+                    finishingType: ''
+                };
+                this.updateButtonVisibility();
+                this.renderIcons();
+                this.updateActiveIcon();
+                this.toggleSectionVisibility();
+
+
+            }
+
+            renderIcons() {
+                const iconsContainer = document.getElementById('iconsContainer');
+                this.icons.forEach((icon, index) => {
+                    const iconContainer = document.createElement('div');
+                    iconContainer.className = 'icon-container';
+
+                    if (index > 0) {
+                        const line = document.createElement('div');
+                        line.className = 'line';
+                        line.id = `line-${index}`;
+                        iconContainer.appendChild(line);
+                    }
+
+                    const dFlex = document.createElement('div');
+                    dFlex.className = 'd-flex flex-column align-items-center';
+
+                    const iconCover = document.createElement('span');
+                    iconCover.className = 'icon-cover';
+                    iconCover.id = `icon-cover-${index}`;
+                    if (index !== 3)
+                        iconCover.innerHTML = `<svg class="icon-svg" onclick="propertyForm.setActive(${index})" viewBox="0 -960 960 960" height="24px" width="24px" fill="#e8eaed">
+                              <path d="${icon.iconPath}"></path>
+                          </svg>`;
+                    else
+                        iconCover.innerHTML = '<i class="fa-solid fa-sitemap"></i>'
+
+                    const label = document.createElement('label');
+                    label.className = 'icon-label';
+                    label.style.fontSize = '13px';
+                    label.textContent = icon.title;
+
+                    dFlex.appendChild(iconCover);
+                    dFlex.appendChild(label);
+                    iconContainer.appendChild(dFlex);
+                    iconsContainer.appendChild(iconContainer);
+                });
+            }
+
+            next() {
+                if (this.activeIndex < this.icons.length - 1 && this.isSectionValid(this.activeIndex)) {
+                    this.activeIndex++;
+                    this.updateButtonVisibility();
+                    this.updateActiveIcon();
+                    this.toggleSectionVisibility();
+
+                }
+            }
+
+            back() {
+                if (this.activeIndex > 0) {
+                    this.activeIndex--;
+                    this.updateButtonVisibility();
+                    this.updateActiveIcon();
+                    this.toggleSectionVisibility();
+
+                }
+            }
+
+            isActive(index) {
+                return index <= this.activeIndex;
+            }
+
+            isLineActive(index) {
+                return index <= this.activeIndex;
+            }
+            toggleSectionVisibility() {
+                const section1 = document.getElementById('section1');
+                const section2 = document.getElementById('section2');
+                const section3 = document.getElementById('section3');
+                const section4 = document.getElementById('section4');
+                const section5 = document.getElementById('section5');
+
+                section1.classList.toggle('hidden', !(this.activeIndex === 0));
+                section2.classList.toggle('hidden', !(this.activeIndex === 1));
+                section3.classList.toggle('hidden', !(this.activeIndex === 2));
+                section4.classList.toggle('hidden', !(this.activeIndex === 3));
+                section5.classList.toggle('hidden', !(this.activeIndex === 4));
+            }
+
+            isSectionValid(index) {
+                switch (index) {
+                    case 0: return this.isSection1Valid();
+                    case 1: return this.isSection2Valid();
+                    case 2: return this.isSection3Valid();
+                    case 3: return this.isSection4Valid();
+                    case 4: return this.isSection5Valid();
+                    default: return false;
+                }
+            }
+
+            isSection1Valid() {
+                if (document.getElementById('Sale').checked) {
+                    document.getElementById('Purpose').value = 'Sale';
+                }
+                else if (document.getElementById('Rent').checked) {
+                    document.getElementById('Purpose').value = 'Rent';
+                }
+
+
+
+                if (this.formGroup.title.length >= 10 && this.formGroup.propertyDescription.length >= 10)
+                    return true;
+                else {
+                    validateField(document.getElementById("Title"), "titleErrorRequired", "titleError", "Title is required.", "Title must be at least 10 characters long.", 10);
+                    validateDescription(document.getElementById("hiddenDescription"), "discriptionErrorRequired", "discriptionError", "Discription is required.", "Discription must be at least 10 characters long.", 10);
+                    return false;
+
+                }
+
+            }
+
+            isSection2Valid() {
+                let currency = document.getElementById('currency-value')
+                if (Number(this.formGroup.price) >= 40000 && Number(this.formGroup.price) <= 1000000)
+                    return true;
+                else {
+                    validateField(document.getElementById("Price"), "priceErrorRequired", "priceError", "Price is required.", "Price must be at least 40000 and less than 1000000.", 10, true);
+                }
+                return false;
+
+                // return this.formGroup.price > 0 && this.formGroup.currency && this.formGroup.paymentMethod;
+            }
+
+            isSection3Valid() {
+                let type = document.getElementById('type-value');
+
+                if (this.formGroup.location.length >= 0 && (type.value.length !== 0)) {
+
+                    return true;
+                }
+                else {
+                    document.getElementById('typeError').textContent = 'Type is required';
+                    validateField(document.getElementById("Location"), "locationErrorRequired", "locationError", "Location is required.", "Location is required.", 3);
+
+                    return false
+                }
+
+                // return this.formGroup.bedrooms > 0 && this.formGroup.bathrooms > 0 && this.formGroup.space > 0;
+            }
+            isSection4Valid() {
+
+                if (Number(this.formGroup.space) >= 40 && Number(this.formGroup.space) <= 3000 && (Number(this.formGroup.bedrooms) >= 1 && Number(this.formGroup.bedrooms) <= 11) && (Number(this.formGroup.bathrooms) >= 1 && Number(this.formGroup.bathrooms) <= 8))
+                    return true;
+                else {
+                    validateField(document.getElementById("Space"), "spaceErrorRequired", "spaceError", "Space is required.", "Space must be at least 40 sqft and less than or equal 3000 sqft.", 40, false, true);
+                    validateField(document.getElementById("Bedrooms"), "bedroomsErrorRequired", "bedroomsError", "Bedrooms is required.", "Bedrooms must be at least 1 and less than or equal 10.", 1, false, false, true);
+                    validateField(document.getElementById("Bathrooms"), "bathroomsErrorRequired", "bathroomsError", "Price is required.", "Bathrooms must be at least 1 and less than or equal 7.", 1, false, false, false, true);
+                }
+                return false;
+            }
+            isSection5Valid() {
+                if (mainImageSelected !== null && additionalImages.length >= 3) {
+                    return true;
+                }
+                else {
+                    if (mainImageSelected === null)
+                        document.getElementById('mainImageError').textContent = 'Main Image Required'
+
+                    if (additionalImages.length < 3)
+
+                        document.getElementById('additionalImagesError').textContent = 'Additional Images Required and should be at least 3 images'
+
+                    return false;
+                }
+            }
+
+            setActive(index) {
+                this.activeIndex = index;
+                this.updateActiveIcon();
+                this.updateButtonVisibility();
+            }
+
+            updateActiveIcon() {
+                const iconsContainer = document.getElementById('iconsContainer');
+                const iconCovers = iconsContainer.getElementsByClassName('icon-cover');
+                const lines = iconsContainer.getElementsByClassName('line');
+
+                for (let i = 0; i < iconCovers.length; i++) {
+                    iconCovers[i].classList.toggle('active', this.isActive(i));
+                    if (lines[i]) {
+                        lines[i].classList.toggle('active', this.isLineActive(i));
+                    }
+                }
+            }
+
+            updateButtonVisibility() {
+                document.getElementById('backButton').style.display = this.activeIndex === 0 ? 'none' : 'block';
+                document.getElementById('nextButton').style.display = this.activeIndex === 4 ? 'none' : 'block';
+                document.getElementById('addNowButton').style.display = (this.activeIndex === 0 || this.activeIndex === 1 || this.activeIndex === 2 || this.activeIndex === 3) ? 'none' : 'block';
+            }
+
+            createNewProperty() {
+                if (this.isSectionValid(this.activeIndex)) {
+                    document.getElementById('propertyForm').submit();
+                } else {
+                    console.log("Current section is not valid.");
+                }
+            }
+        }
+
+        const propertyForm = new PropertyForm(icons);
+
+        // Example button click handlers
+        document.getElementById('nextButton').onclick = () => propertyForm.next();
+        document.getElementById('backButton').onclick = () => propertyForm.back();
+        document.getElementById('addNowButton').onclick = () => propertyForm.createNewProperty();
+
+
+        // validation
+        function checkAtLeastThreeSelected() {
+            // Select all checkboxes with the class 'feature-checkbox'
+            const checkboxes = document.querySelectorAll(".feature-checkbox");
+
+            // Count the number of checked checkboxes
+            let checkedCount = 0;
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    checkedCount++;
+                }
+            });
+
+            // Check if at least 3 checkboxes are selected
+            if (checkedCount >= 3) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+function validateField(input, requiredErrorId, formatErrorId, requiredMessage, formatMessage, minLength = 0, isNumber = false, isSpace = false, isBeds = false, isBaths = false) {
+    const requiredErrorElement = document.getElementById(requiredErrorId);
+    const formatErrorElement = document.getElementById(formatErrorId);
+    requiredErrorElement.textContent = "";
+    formatErrorElement.textContent = "";
+
+    let value = input.value.trim();
+
+    // Check for required field
+    if (value.length === 0) {
+        input.style.borderColor = "red";
+        requiredErrorElement.textContent = requiredMessage;
+    } 
+    // Check for length and other validation rules
+    else if (!isBeds && !isBaths && !isSpace && !isNumber && value.length < minLength) {
+        input.style.borderColor = "red";
+        formatErrorElement.textContent = formatMessage;
+    }
+    // Check for price validation
+    else if (isNumber && (Number(value) < 40000 || Number(value) > 1000000)) {
+        input.style.borderColor = "red";
+        formatErrorElement.textContent = formatMessage;
+    }
+    // Check for space validation
+    else if (isSpace && (Number(value) < 40 || Number(value) > 3000)) {
+        input.style.borderColor = "red";
+        formatErrorElement.textContent = formatMessage;
+    }
+    // Check for bedroom validation
+    else if (isBeds && (Number(value) < 1 || Number(value) > 10)) {
+        input.style.borderColor = "red";
+        formatErrorElement.textContent = formatMessage;
+    }
+    // Check for bathroom validation
+    else if (isBaths && (Number(value) < 1 || Number(value) > 7)) {
+        input.style.borderColor = "red";
+        formatErrorElement.textContent = formatMessage;
+    }
+    else {
+        input.style.borderColor = "#0198a0";
+    }
+}
+        function validateDescription(input, requiredErrorId, formatErrorId, requiredMessage, formatMessage, minLength = 0, isEmail = false) {
+            const requiredErrorElement = document.getElementById(requiredErrorId);
+            const formatErrorElement = document.getElementById(formatErrorId);
+            requiredErrorElement.textContent = "";
+            formatErrorElement.textContent = "";
+
+            if (input.value.length === 0) {
+                input.style.borderColor = "red";
+                requiredErrorElement.textContent = requiredMessage;
+            } else if (input.value.length < minLength) {
+                input.style.borderColor = "red";
+                formatErrorElement.textContent = formatMessage;
+            } else {
+                input.style.borderColor = "#0198a0";
+            }
+        }
+
+        document.getElementById("Title").addEventListener("input", function () {
+            validateField(this, "titleErrorRequired", "titleError", "Title is required.", "Title must be at least 10 characters long.", 10);
+            propertyForm.formGroup.title = this.value;
+
+        });
+        document.getElementById("Title").addEventListener("blur", function () {
+            validateField(this, "titleErrorRequired", "titleError", "Title is required.", "Title must be at least 10 characters long.", 10);
+            propertyForm.formGroup.title = this.value;
+        });
+
+        document.getElementById("Location").addEventListener("input", function () {
+            validateField(this, "locationErrorRequired", "locationError", "Location is required.", "Location is required.", 3);
+
+            propertyForm.formGroup.location = this.value;
+
+        });
+        document.getElementById("Location").addEventListener("blur", function () {
+            validateField(this, "locationErrorRequired", "locationError", "Location is required.", "Location is required.", 3);
+            propertyForm.formGroup.location = this.value;
+        });
+
+        document.getElementById("Space").addEventListener("input", function () {
+            validateField(this, "spaceErrorRequired", "spaceError", "Space is required.", "Space must be at least 40 sqft and less than or equal 3000.", 40, false, true);
+
+            propertyForm.formGroup.space = this.value;
+
+        });
+        document.getElementById("Space").addEventListener("blur", function () {
+            validateField(this, "spaceErrorRequired", "spaceError", "Space is required.", "Space must be at least 40 sqft and less than or equal 3000.", 40, false, true);
+            propertyForm.formGroup.space = this.value;
+        });
+
+
+        document.getElementById("Price").addEventListener("input", function () {
+            validateField(this, "priceErrorRequired", "priceError", "Price is required.", "Price must be at least 40000 and less than or equal 1000000.", 40000, true, false);
+            propertyForm.formGroup.price = this.value;
+
+        });
+        document.getElementById("Price").addEventListener("blur", function () {
+            validateField(this, "priceErrorRequired", "priceError", "Price is required.", "Price must be at least 40000 and less than or equal 1000000.", 40000, true, false);
+            propertyForm.formGroup.price = this.value;
+        });
+
+
+
+
+        document.getElementById("Bedrooms").addEventListener("input", function () {
+            validateField(this, "bedroomsErrorRequired", "bedroomsError", "Bedrooms is required.", "Bedrooms must be at least 1 and less than or equal 10.", 1, false, false, true);
+            propertyForm.formGroup.bedrooms = this.value;
+
+        });
+        document.getElementById("Bedrooms").addEventListener("blur", function () {
+            validateField(this, "bedroomsErrorRequired", "bedroomsError", "Bedrooms is required.", "Bedrooms must be at least 1 and less than or equal 10.", 1, false, false, true);
+            propertyForm.formGroup.bedrooms = this.value;
+        });
+
+
+        document.getElementById("Bathrooms").addEventListener("input", function () {
+            validateField(this, "bathroomsErrorRequired", "bathroomsError", "Bedrooms is required.", "Bathrooms must be at least 1 and less than or equal 7.", 1, false, false, false, true);
+            propertyForm.formGroup.bathrooms = this.value;
+
+        });
+        document.getElementById("Bathrooms").addEventListener("blur", function () {
+            validateField(this, "bathroomsErrorRequired", "bathroomsError", "Price is required.", "Bathrooms must be at least 1 and less than or equal 7.", 1, false, false, false, true);
+            propertyForm.formGroup.bathrooms = this.value;
+        });
+
+
+
+        document.getElementById("hiddenDescription").addEventListener("input", function () {
+            validateDescription(this, "discriptionErrorRequired", "discriptionError", "Discription is required.", "Discription must be at least 10 characters long.", 10);
+            propertyForm.formGroup.propertyDescription = this.value;
+
+        });
+        document.getElementById("hiddenDescription").addEventListener("blur", function () {
+            validateDescription(this, "discriptionErrorRequired", "discriptionError", "Discription is required.", "Discription must be at least 10 characters long.", 10);
+            propertyForm.formGroup.propertyDescription = this.value;
+
+
+
+        });
+
+
+
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< images part >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        let mainImageURL = null;
+        let additionalImagesURL = [];  // Array to store Base64 URLs for previews
+
+        // Method to handle main image selection
+        // Method to handle main image selection
+        function onMainImageSelected(event) {
+            mainImageSelected = event.target.files[0]; // Get the selected file
+            if (mainImageSelected) {
+                document.getElementById('mainImageError').textContent = ''; // Clear the error message
+                createMainImageURL(); // Create the image preview
+            }
+        }
+
+
+        // Method to create Base64 URL for main image
+        function createMainImageURL() {
+            if (mainImageSelected) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    mainImageURL = reader.result;
+                    document.getElementById("mainImage").src = mainImageURL;
+                    document.getElementById("mainImagePreview").style.display = 'block';
+                };
+                reader.readAsDataURL(mainImageSelected);
+                document.getElementById('mainImageError').textContent = ''
+
+            }
+        }
+
+
+
+        // Method to handle additional image selection (multiple images)
+        function onAdditionalImageSelected(event) {
+            const files = event.target.files;  // Get the selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!isDuplicateImage(file)) {  // Ensure no duplicates
+                    additionalImages.push(file);  // Add the file to the array
+                    createAdditionalImageURL(file);  // Create a URL for preview
+                } else {
+                    alert("Duplicate image detected. Please select a different image.");
+                }
+            }
+            updateFileInput();
+            if (additionalImages.length >=3) {
+                document.getElementById('additionalImagesError').textContent = ''; // Clear the error message
+            }
+        }
+
+        // Function to update the file input with the files in the additionalImages array
+        function updateFileInput() {
+            const inputElement = document.getElementById('additionalImageInput');
+            const dataTransfer = new DataTransfer();  // Create a new DataTransfer object
+
+            // Add each file from additionalImages to the DataTransfer object
+            additionalImages.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+
+            // Update the file input with the new files
+            inputElement.files = dataTransfer.files;
+            document.getElementById('additionalImagesError').textContext = ''
+
+        }
+
+        // Method to create Base64 URL for additional image
+        function createAdditionalImageURL(image) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                additionalImagesURL.push(reader.result);  // Store the Base64 URL
+                updateAdditionalImagesPreview();  // Update the preview
+            };
+            reader.readAsDataURL(image);
+        }
+
+        // Method to handle dropping additional images
+        function onDropAdditional(event) {
+            event.preventDefault();
+
+            const inputElement = document.getElementById('additionalImageInput');
+            const dt = new DataTransfer();
+
+            // Include existing files from the input into DataTransfer
+            if (inputElement.files) {
+                Array.from(inputElement.files).forEach((file) => {
+                    dt.items.add(file);
+                });
+            }
+
+            if (event.dataTransfer?.files) {
+                const files = event.dataTransfer.files;
+
+                for (let i = 0; i < files.length; i++) {
+                    const droppedFile = files[i];
+                    if (!isDuplicateImage(droppedFile)) {  // Ensure no duplicates
+                        dt.items.add(droppedFile);  // Add the new file to DataTransfer
+                        additionalImages.push(droppedFile);  // Add to the array
+                        createAdditionalImageURL(droppedFile);  // Create URL for preview
+
+                        document.getElementById('additionalImagesError').textContent = '';
+                    } else {
+                        alert("Duplicate image detected. Please drop a different image.");
+                    }
+                }
+
+                // Assign the updated FileList to the input
+                inputElement.files = dt.files;
+            }
+        }
+
+
+        // Method to check if the image is a duplicate
+        function isDuplicateImage(file) {
+            // Check if the file already exists in additionalImages array
+            // and if it matches the main image
+            return additionalImages.some(existingFile =>
+                existingFile.name === file.name && existingFile.size === file.size) ||
+                (mainImageSelected && mainImageSelected.name === file.name && mainImageSelected.size === file.size);
+        }
+
+
+        // Method to update additional images preview
+        function updateAdditionalImagesPreview() {
+            const additionalImagesPreview = document.getElementById("additionalImagesPreview");
+            additionalImagesPreview.innerHTML = ''; // Clear existing previews
+            additionalImagesURL.forEach((image, index) => {
+                const imageContainer = document.createElement("div");
+                imageContainer.className = "image-preview-container";
+
+                const img = document.createElement("img");
+                img.src = image;
+                img.alt = "Uploaded Additional Image";
+                img.className = "uploaded-image";
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete Image";
+                deleteButton.className = "delete-button";
+                deleteButton.type = "button"; // Prevent form submission
+                deleteButton.onclick = function () {
+                    deleteAdditionalImage(index);
+                };
+
+                imageContainer.appendChild(img);
+                imageContainer.appendChild(deleteButton);
+                additionalImagesPreview.appendChild(imageContainer);
+            });
+
+            // Always keep the additional images section visible for uploads
+            document.getElementById("additionalImagesSection").style.display = "block";
+        }
+
+        // Method to delete main image
+        function deleteMainImage() {
+            mainImageSelected = null;
+            mainImageURL = null;
+            document.getElementById("mainImagePreview").style.display = 'none';
+            document.getElementById('mainImageError').textContext = 'Main Image Required'
+
+        }
+
+        // Method to delete additional image by index
+   function deleteAdditionalImage(index) {
+    additionalImagesURL.splice(index, 1); // Remove the image from the array
+    additionalImages.splice(index, 1); // Remove the image from the array
+    updateAdditionalImagesPreview();
+
+         document.getElementById('additionalImagesError').textContext = 'Additional Images Required and should be at least 3 images'
+
+        }
+
+        // Method to prevent default behavior for drag over
+        function onDragOver(event) {
+            event.preventDefault();
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+<div>
+</div>
+
+
+
+
+
+<script>
+ 
+
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<dropdown>>>>>>>>>>>>>>>>>>>>>>>>
+    const PropertyTypes = {
+        Apartment: 'Apartment',
+        Townhouse: 'Townhouse',
+        VillaCompound: 'Villa Compound',
+        ResidentialPlot: 'Residential Plot',
+        ResidentialBuilding: 'Residential Building',
+        Villa: 'Villa',
+        HotelApartment: 'Hotel Apartment',
+        ResidentialFloor: 'Residential Floor'
+    };
+
+    // Select the label and options container for Currency
+    const labelType = document.querySelector('.dropdown__filter-selected-type');
+    const optionsContainerType = document.querySelector('.dropdown__select-type');
+    const typeValue = document.querySelector('#type-value');
+
+    // Generate dropdown options dynamically based on the `paymentTypes` object
+    for (const [key, value] of Object.entries(PropertyTypes)) {
+        const optionElementType = document.createElement('li');
+        optionElementType.classList.add('dropdown__select-option');
+        optionElementType.setAttribute('role', 'option');
+        optionElementType.textContent = value;
+
+
+        // Add click event to change the label when an option is selected
+        optionElementType.addEventListener('click', () => {
+            labelType.textContent = value; // Update label with selected value
+            typeValue.value = value;
+            document.getElementById('typeError').textContent = '';
+
+        });
+
+        // Append the option to the container
+        optionsContainerType.appendChild(optionElementType);
+    }
+
+    // Close the dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const toggleType = document.querySelector('.dropdown__switch-type');
+        const elementType = e.target;
+
+        // If clicking on the toggle or an option, do nothing
+        if (elementType === toggleType || elementType.closest('.dropdown__filter-type')) return;
+
+        // Check if clicked outside the dropdown
+        toggleType.checked = false;
+    });
+
+
+
+
+
+</script>

@@ -1,0 +1,216 @@
+﻿
+
+
+
+
+
+<div class="d-flex align-items-center justify-content-center" style="
+z-index: 123;
+width: 100%;
+box-shadow: 0 1px 0 0 #efefef;height:450px;
+position: relative;gap:30px;">
+
+
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="position: absolute;
+width:100%;z-index: -1;height:450px">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img style="max-height: 450px;object-fit: cover;" src="~/Static Images/home.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img style="max-height: 450px;object-fit: cover;" src="~/Static Images/home2.jpg" class="d-block w-100" alt="...">
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="wrapper" style="width:60%;">
+        <div class="chips_input w-100" data-limit="15">
+            <div class="inner">
+
+                <input type="text" id="myinput" name="myinput">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" style="fill: var(--color-1);position:absolute;right:5px" fill="#e8eaed;">
+            <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"></path>
+        </svg>
+            </div>
+        </div>
+    </div>
+
+    <button id="searchBtn" class="search" style="border: none; padding: 14px 45px; background: var(--color-1); font-weight: 600; color: white; border-radius: 5px;">
+        Search
+    </button>
+
+
+    </div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chipContainer = document.querySelector(".chips_input .inner");
+        const inputField = document.getElementById("myinput");
+        const chipLimit = parseInt(document.querySelector(".chips_input").getAttribute("data-limit"), 10);
+        const chipAddition = '<button aria-label="remove this chip"><i class="bi bi-x-circle"></i></button>';
+
+        const chipList = [];  // Array to store chip values
+
+        updateLimiter();
+
+        // Focus on input when clicking container
+        chipContainer.addEventListener("click", () => {
+            inputField.focus();
+        });
+
+        // Handle keydown events for Enter, Tab, and comma
+        inputField.addEventListener("keydown", (e) => {
+            if (["Enter", "Tab", ","].includes(e.key)) {
+                e.preventDefault();
+                let value = inputField.value.trim();
+
+                // Remove trailing comma if it's the key pressed
+                if (e.key === ",") {
+                    value = value.slice(0, -1);
+                }
+
+                // Check if value is valid, unique, and within limit
+                if (value && !hasDuplicateChip(value) && getChipCount() < chipLimit) {
+                    makeChip(value);
+                    inputField.value = "";
+                }
+            } else if (e.key === "Backspace" && inputField.value.length === 0) {
+                removeLastChip();
+                updateLimiter();
+            }
+        });
+
+        // Handle removing chips on button click
+        chipContainer.addEventListener("click", (e) => {
+            if (e.target.closest("button")) {
+                const chipElement = e.target.closest(".chip");
+                const chipValue = chipElement.textContent.trim().slice(0, -1); // Remove the "remove" button text
+                chipElement.remove();
+                updateChipList(chipValue, false); // Remove from chip list
+                updateLimiter();
+            }
+        });
+
+        // Create a new chip
+        function makeChip(text) {
+            const chip = document.createElement("span");
+            chip.classList.add("chip");
+            chip.innerHTML = `${escapeHtml(text)}${chipAddition}`;
+            chipContainer.insertBefore(chip, inputField);
+            updateChipList(text, true); // Add to chip list
+            updateLimiter();
+        }
+
+        // Count the chips
+        function getChipCount() {
+            return chipContainer.querySelectorAll(".chip").length;
+        }
+
+        // Check for duplicate chips
+        function hasDuplicateChip(value) {
+            const chips = chipContainer.querySelectorAll(".chip");
+            return Array.from(chips).some(chip => chip.textContent.trim() === value.trim());
+        }
+
+        // Remove the last chip
+        function removeLastChip() {
+            const lastChip = chipContainer.querySelector(".chip:last-of-type");
+            if (lastChip) {
+                const chipValue = lastChip.textContent.trim().slice(0, -1); // Get chip value without remove button
+                lastChip.remove();
+                updateChipList(chipValue, false); // Remove from chip list
+            }
+        }
+
+        // Update chip list in the chipList array (adding/removing)
+        function updateChipList(chipValue, isAdding) {
+            const chipIndex = chipList.indexOf(chipValue);
+
+            // If adding and chip is not already in the list
+            if (isAdding && chipIndex === -1) {
+                chipList.push(chipValue);
+            }
+
+            // If removing
+            if (!isAdding && chipIndex !== -1) {
+                chipList.splice(chipIndex, 1);
+            }
+
+            // Log the chip list to the console
+            console.log("Current Chip List:", chipList);
+
+            // Optionally, you can also log a specific chip being added or removed:
+            if (isAdding) {
+                console.log(`Added chip: ${chipValue}`);
+            } else {
+                console.log(`Removed chip: ${chipValue}`);
+            }
+        }
+
+        // Update chip limit display
+        function updateLimiter() {
+            const limitLabel = document.querySelector(".chips_input > label > .limit");
+            const currentCount = getChipCount();
+            const remaining = chipLimit - currentCount;
+
+            if (limitLabel) {
+                limitLabel.textContent = `(${remaining}/${chipLimit})`;
+                limitLabel.style.color = remaining === 0 ? "var(--invalid)" : "inherit";
+            }
+        }
+
+        // Escape HTML to prevent injection
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        const searchBtn = document.getElementById("searchBtn");
+        const locationValues = chipList.join(",");
+
+
+        searchBtn.addEventListener("click", function () {
+            const locationValues = chipList.join(",");
+            const baseUrl = "https://localhost:7199/HomePage/PropertyList";
+            const queryParams = new URLSearchParams({
+                location: locationValues,
+                myinput: "",
+                Purpose: "All",
+                Sort: "Sort By",
+                Type: "Select Property Type",
+                MinPrice: "40000",
+                MaxPrice: "1000000",
+                MinSpace: "40",
+                MaxSpace: "3000",
+                Bedrooms: "0",
+                Bathrooms: "0"
+            });
+            const url = `${baseUrl}?${queryParams.toString()}`;
+            window.location.href = url;
+        });
+
+    });
+
+
+
+
+ 
+</script>
+
+
+
+
+

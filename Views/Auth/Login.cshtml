@@ -1,0 +1,157 @@
+﻿@model Real_State.Models.LoginModel;
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_layout.cshtml";
+}
+
+<div class="d-flex row flex-row-reverse">
+    <div class="sideLeft col-lg-7 col-md-4 d-none d-sm-flex justify-content-center">
+        <img src="~/Static Images/sign.jpg" alt="Login Image">
+    </div>
+
+    <div class="col-lg-5 col-md-8 col-sm-12 d-flex flex-column align-items-center justify-content-center">
+        <div class="d-flex flex-column align-items-center" style="width: 100%; height: 86%; justify-content: center;">
+            <div class="mb-2">
+                <img src="~/Static Images/logo-with-name.png" alt="Company Logo" />
+            </div>
+            <h4 class="col-lg-6 col-md-8 col-sm-8">Login</h4>
+
+            <form asp-action="Login" asp-controller="Auth" method="post" id="loginForm" class="col-lg-6 col-md-8 col-sm-8">
+                <div class="input-group ">
+                    <i class="bi bi-envelope"></i>
+                    <input id="Email" type="email" placeholder="Email" class="form-control" asp-for="Email" required />
+
+                </div>
+                <div class="mb-3">
+                    <span id="emailErrorRequired" class="text-danger"></span>
+                    <span id="emailError" class="text-danger"></span>
+                </div>
+
+                <div class="input-group ">
+                    <svg class="svg-inline--fa fa-lock" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="lock" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                        <path fill="currentColor" d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"></path>
+                    </svg>
+                    <input id="Password" type="password" placeholder="Password" class="form-control" asp-for="Password" required />
+                    <i class="bi bi-eye" style="cursor: pointer;left:90%;" onclick="togglePasswordVisibility()"></i>
+
+                </div>
+                <div class="mb-5">
+                    <span id="passwordErrorRequired" class="text-danger"></span>
+                    <span id="passwordError" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="text-danger">@Model.Message</span>
+                </div>
+                <button type="submit" class="registerButton">Login Now</button>
+            </form>
+
+            <p>
+                Already have an account?
+                <a asp-controller="Auth" asp-action="Register" style="color: #0198a0;">Sign Up</a>
+            </p>
+
+
+
+        </div>
+
+        <div style="width: 100%; background-color: #e3e3e3; height: 14%; padding: 20px;" class="d-flex justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span style="font-weight: 500;">Real EState</span>
+                    <a href="#" style="color: black; font-size: 22px; text-decoration: none;"></a>
+
+                </div>
+                <div class="text-center">
+                    All rights reserved | Real Estate 2024 ©
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("Password");
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+
+    // Custom validation function for email field with border color changes
+    function validateFieldEmail(input, requiredErrorId, formatErrorId, requiredMessage, formatMessage) {
+        const requiredErrorElement = document.getElementById(requiredErrorId);
+        const formatErrorElement = document.getElementById(formatErrorId);
+        requiredErrorElement.textContent = "";
+        formatErrorElement.textContent = "";
+
+        if (input.value.length === 0) {
+            input.style.borderColor = "red";
+            requiredErrorElement.textContent = requiredMessage;
+        } else if (!input.checkValidity()) {
+            input.style.borderColor = "red";
+            formatErrorElement.textContent = formatMessage;
+        } else {
+            input.style.borderColor = "#0198a0"; // valid color
+        }
+    }
+
+    // Custom validation function for password field with border color changes
+    function validateFieldPassword(input, requiredErrorId, complexityErrorId, requiredMessage, complexityMessage) {
+        const requiredErrorElement = document.getElementById(requiredErrorId);
+        const complexityErrorElement = document.getElementById(complexityErrorId);
+        requiredErrorElement.textContent = "";
+        complexityErrorElement.textContent = "";
+
+        if (input.value.length === 0) {
+            input.style.borderColor = "red";
+            requiredErrorElement.textContent = requiredMessage;
+        } else if (input.value.length < 8) {
+            input.style.borderColor = "red";
+            complexityErrorElement.textContent = complexityMessage;
+        } else {
+            input.style.borderColor = "#0198a0"; // valid color
+        }
+    }
+
+    // Event listeners for input validation with blur color change
+    document.getElementById("Email").addEventListener("input", function () {
+        validateFieldEmail(this, "emailErrorRequired", "emailError", "Email is required.", "Must be a valid email address.");
+    });
+
+    document.getElementById("Email").addEventListener("blur", function () {
+        if (!this.checkValidity()) {
+            this.style.borderColor = "red";
+        } else if (this.value.length > 0) {
+            this.style.borderColor = "#0198a0";
+        } else {
+            this.style.borderColor = "#ced4da"; // default color when empty
+        }
+    });
+
+    document.getElementById("Password").addEventListener("input", function () {
+        validateFieldPassword(this, "passwordErrorRequired", "passwordError", "Password is required.", "Password must be at least 8 characters long.");
+    });
+
+    document.getElementById("Password").addEventListener("blur", function () {
+        if (this.value.length === 0) {
+            this.style.borderColor = "#ced4da"; // default color when empty
+        } else if (this.value.length >= 8) {
+            this.style.borderColor = "#0198a0"; // valid color
+        } else {
+            this.style.borderColor = "red"; // invalid color
+        }
+    });
+
+    // Form submission validation
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        const email = document.getElementById("Email");
+        const password = document.getElementById("Password");
+
+        validateFieldEmail(email, "emailErrorRequired", "emailError", "Email is required.", "Must be a valid email address.");
+        validateFieldPassword(password, "passwordErrorRequired", "passwordError", "Password is required.", "Password must be at least 8 characters long.");
+
+        if (!email.checkValidity() || password.value.length < 8) {
+            event.preventDefault();
+        }
+    });
+</script>

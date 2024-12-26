@@ -1,0 +1,455 @@
+﻿:root {
+    --dash-color: #6973e3;
+    --color_1: #0198A0;
+    --hr: black;
+    --sider-color: #0198A0;
+    --filter-color: #0198A0;
+    --color_2: #FFA500;
+    --color_3: #FFA500;
+    --color_4: #F9CA74;
+    --color_5: #f7f7f7;
+    --icon-color: #6c757d;
+}
+ul {
+    list-style: none;
+}
+
+    .icon-navigation {
+    display: flex;
+    padding:50px;
+    flex-direction: column;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+}
+
+.icon-container {
+    display: flex;
+    margin: 10px 0;
+    align-items: center;
+}
+
+.bi {
+    font-size: 20px; /* Adjust font size as needed */
+
+    transition: all 0.3s ease;
+}
+
+.icon-cover {
+    padding: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--icon-color);
+}
+
+
+    .icon-svg.active {
+        fill: var(--color_1) !important;
+    }
+    label{
+        width:100%;
+    }
+.icon-svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--icon-color);
+}
+    .active {
+        border-color: var(--color_1); /* Color for active icon */
+        fill: var(--color_1) !important;
+        border-color: var(--color_1);
+    }
+.hidden {
+    display: none !important; /* Hide the element */
+    visibility: hidden; /* Hide the element from layout (takes no space) */
+    pointer-events: none; /* Prevent interaction */
+}
+
+.line {
+    flex: 1;
+    border-bottom: 2px solid #ccc;
+    width: 60px;
+    margin-bottom: 25px;
+}
+
+    .line.active {
+        border-color: var(--color_1); /* Color for active line */
+    }
+
+.buttons {
+    margin: 20px 0;
+    display: flex;
+    justify-content: start;
+}
+
+    .buttons button {
+        margin-right: 10px;
+    }
+
+label {
+    font-weight: 600;
+    font-family: monospace;
+    margin-bottom: 10px;
+}
+
+.inputs-container {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    background: #eef7f7;
+    border-radius: 14px;
+    justify-content: center;
+}
+span .svg-inline--fa{
+    height:2rem;
+}
+
+.fa-sitemap {
+    width: 37px;
+    height: 33px;
+    padding: 3px;
+}
+    .fa-sitemap path{
+        fill:var(--icon-color);
+    }
+
+.tags span {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    display: flex;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 5px;
+    flex-direction: column;
+    align-items: center;
+}
+#map {
+    height: 500px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.location-controls {
+    margin: 10px 0;
+}
+
+    .tags span i {
+        font-size: 22px;
+    }
+
+.special-section h2 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+    .image-upload-container {
+        margin: 40px auto;
+        padding: 20px;
+        display: flex;
+        border: 1px dashed #7f7f7f;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+        align-items: center;
+    }
+
+.file-input {
+    margin-bottom: 10px;
+}
+
+.upload-message {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 10px !important;
+}
+
+.image-preview-container {
+    margin: 20px auto;
+    width: 90%;
+    padding: 20px;
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.uploaded-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.delete-button {
+    background-color: #ff0000;
+    color: #fff;
+    right: 0;
+    border: none;
+    border-top-right-radius: 5px;
+    top: 0;
+    position: absolute;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    .delete-button:hover {
+        background-color: #cc0000;
+    }
+/* Add any custom CSS styles here */
+
+.container {
+    margin-top: 20px;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+.completed h5 {
+    color: green;
+}
+
+.active h5 {
+    color: blue;
+}
+
+.drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+    .drop-area input {
+        display: none;
+    }
+
+    .drop-area.dragging {
+        border-color: #66c7ff;
+    }
+
+.imge_1_label {
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 25px;
+}
+
+.btn_back, .btn_next {
+    padding: 10px 40px;
+    background-color: var(--color_1)!important;
+}
+
+.btn_back {
+    color: var(--color_1)!important;
+    background: white!important;
+    border-color: var(--color_1)!important;
+}
+
+
+.selected {
+    background-color: yellow; /* Example background color for selected option */
+    font-weight: bold; /* Example styling for selected option */
+    /* Add any other styles as needed */
+}
+
+
+
+.dropdown-toggle-add {
+    border: 1px solid var(--icon-color);
+    width: 100%;
+    display: flex;
+    padding: 0 10px;
+    background: white;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .dropdown-toggle-add::after {
+        display: none;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+        transition: transform 0.3s ease; /* Add transition for smooth rotation */
+    }
+
+    .dropdown-toggle-add svg {
+        transition: transform 0.3s ease; /* Add transition for smooth rotation */
+    }
+
+    .dropdown-toggle-add.show svg {
+        transform: rotate(180deg); /* Rotate caret when dropdown is open */
+    }
+
+.option {
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+    .option:hover {
+        background-color: var(--color_1);
+        color: white;
+    }
+
+    .option.active {
+        background-color: var(--color_1);
+        color: white;
+    }
+
+.invalid-feedback {
+    display: block;
+}
+
+::ng-deep .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused), ::ng-deep .ck-rounded-corners .ck.ck-editor__main > .ck-editor__editable, .ck.ck-editor__main > .ck-editor__editable.ck-rounded-corners {
+    height: 300px !important;
+}
+
+
+@media (max-width: 450px) { /* Adjust breakpoint as needed */
+    svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    label {
+        font-size: 8px !important;
+    }
+
+    .inputs-container {
+        padding: 25px 0;
+    }
+}
+
+
+
+/* <<<<<<<<<<<<<<<<<< dropdown  >>>>>>>>>>>>>>>>>>*/
+/* General Dropdown Styles */
+.dropdown {
+    width: 100%;
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 300;
+}
+
+@media (min-width: 768px) {
+    .dropdown {
+/*        width: 500px;*/
+    }
+}
+
+/* When dropdown toggle is checked, show the options */
+.dropdown__switch-type:checked + .dropdown__options-filter-type .dropdown__select-type,
+.dropdown__switch-currency:checked + .dropdown__options-filter-currency .dropdown__select-currency,
+.dropdown__switch-finishing:checked + .dropdown__options-filter-finishing .dropdown__select-finishing,
+.dropdown__switch-payment:checked + .dropdown__options-filter-payment .dropdown__select-payment {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+/* Rotate the dropdown arrow when open */
+.dropdown__switch-currency:checked + .dropdown__options-filter-currency .dropdown__filter-currency::after,
+.dropdown__switch-type:checked + .dropdown__options-filter-type .dropdown__filter-type::after,
+.dropdown__switch-finishing:checked + .dropdown__options-filter-finishing .dropdown__filter-finishing::after,
+.dropdown__switch-payment:checked + .dropdown__options-filter-payment .dropdown__filter-payment::after {
+    transform: rotate(-135deg);
+}
+
+/* Basic styling for the dropdown trigger and label */
+.dropdown__options-filter-type, .dropdown__options-filter-currency, .dropdown__options-filter-finishing, .dropdown__options-filter-payment {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* The dropdown input field appearance */
+.dropdown__filter-type, .dropdown__filter-currency, .dropdown__filter-finishing, .dropdown__filter-payment {
+    position: relative;
+    display: flex;
+    padding: 13px;
+    color: #595959;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: .3s;
+    border: 1px solid var(--icon-color);
+}
+
+    .dropdown__filter-type:focus, .dropdown__filter-currency:focus, .dropdown__filter-finishing:focus, .dropdown__filter-payment:focus {
+        outline: none;
+    }
+
+    /* Dropdown arrow styles */
+    .dropdown__filter-type::after, .dropdown__filter-currency::after, .dropdown__filter-finishing::after, .dropdown__filter-payment::after {
+        position: absolute;
+        top: 45%;
+        right: 20px;
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-right: 1px solid #595959;
+        border-bottom: 1px solid #595959;
+        transform: rotate(45deg) translateX(-45%);
+        transition: .3s ease-in-out;
+    }
+
+/* The dropdown options container */
+.dropdown__select-type, .dropdown__select-currency, .dropdown__select-finishing, .dropdown__select-payment {
+    position: absolute;
+    top: 100%;
+    z-index: 3;
+    left: 0;
+    border: 1px solid;
+    width: 100%;
+    background: white;
+    margin-top: 2px;
+    overflow: hidden;
+    transform: scaleY(0);
+    transform-origin: top;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding: 4px;
+    box-shadow: 0px 0px 3px rgb(0 0 0);
+    opacity: 0;
+    transition: .2s ease-in-out;
+}
+
+/* Dropdown option styling */
+.dropdown__select-option, .dropdown__select-option:last-of-type {
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    transition: .3s;
+}
+
+    /* Remove border from last option */
+    .dropdown__select-option:last-of-type, .dropdown__select-option:last-of-currency, .dropdown__select-option:last-of-finishing, .dropdown__select-option:last-of-payment {
+        border-bottom: 0;
+    }
+
+    /* Hover effect for options */
+    .dropdown__select-option:hover {
+        background-color: #e9ecef;
+    }
+
+/* Add specific styles for payment dropdown */
+.dropdown__select-payment {
+    top: 100%;
+    left: 0;
+    z-index: 5;
+}
+
+/* Optional: Add specific styles for when dropdowns are opened */
+.dropdown__select-currency, .dropdown__select-type, .dropdown__select-finishing, .dropdown__select-payment {
+    transition: all 0.3s ease;
+}
+/* <<<<<<<<<<<<<<<<<< dropdown  >>>>>>>>>>>>>>>>>>*/

@@ -1,0 +1,349 @@
+﻿@using System.Security.Claims
+
+@{
+    bool isUserLoggedIn = User.Identity.IsAuthenticated;
+
+    // Retrieve claim values only if the user is authenticated
+    string userId = isUserLoggedIn ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
+    string userEmail = isUserLoggedIn ? User.FindFirst(ClaimTypes.Email)?.Value : null;
+    string userName = isUserLoggedIn ? User.FindFirst(ClaimTypes.Name)?.Value : null;
+    string userImgUrl = isUserLoggedIn ? User.FindFirst("ImgUrl")?.Value : null;
+
+    // Retrieve all roles
+    List<string> userRoles = isUserLoggedIn
+        ? User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList()
+        : new List<string>();
+
+    if (string.IsNullOrEmpty(userImgUrl))
+    {
+        userImgUrl = "/Static Images/profile1.png";  // Fallback to default profile image
+    }
+    var isSuberAdmin = false;
+ 
+        if (userRoles.Count()==3)
+        {
+            isSuberAdmin = true;
+        }
+    
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <style>
+        #notificationList li {
+            padding: 13px;
+            border-bottom: 1px solid;
+            cursor: pointer;
+        }
+    </style>
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Libraries Stylesheet -->
+    <link href="~lib2/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~lib2/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/Admin/css/admin.css" rel="stylesheet">
+    <link href="~/Home/css/property-list.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Admin/css/add-property.css">
+    <link rel="stylesheet" href="~/User/css/profile.css">
+
+</head>
+
+<body>
+    <div class=" position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+        <!-- Sidebar Start -->
+        <div class="sidebar  pb-3">
+            <nav class="navbar bg-light navbar-light" style="height: 100%;display: flex;flex-direction: column;align-items: flex-start;justify-content: flex-start;">
+                <a href="@Url.Action("Home", "HomePage")" class="navbar-brand mx-4 mb-3">
+                    <img  src="~/Static Images/logo-with-name.png" alt="" style="width: 60px;">
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="@userImgUrl" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">@userName</h6>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="@Url.Action("Dashboard", "Admin")" class="nav-item nav-link @(IsActive("Admin", "Dashboard") ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="@Url.Action("GetAllProperties", "Admin")" aria-expanded="@(IsActive("Admin", "GetAllProperties") ? "true" : "false")@(IsActive("Admin", "SoldProperties") ? "true" : "false")@(IsActive("Admin", "AddProperty") ? "true" : "false")"
+                           class="nav-link dropdown-toggle @(IsActive("Admin", "GetAllProperties") ? "active show" : "") @(IsActive("Admin", "SoldProperties") ? "active show" : "") @(IsActive("Admin", "AddProperty") ? "active show" : "")" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Properties</a>
+                        <div class="dropdown-menu bg-transparent border-0 @(IsActive("Admin", "GetAllProperties") ? "active show" : "")
+                         @(IsActive("Admin", "SoldProperties") ? "active show" : "")  @(IsActive("Admin", "AddProperty") ? "active show" : "")
+                         ">
+                            <a href="@Url.Action("AddProperty", "Admin")" class="dropdown-item @(IsActive("Admin", "AddProperty") ? "active" : "")">Add Property</a>
+                            <a href="@Url.Action("GetAllProperties", "Admin")" class="dropdown-item @(IsActive("Admin", "GetAllProperties") ? "active" : "")">List</a>
+                            <a href="@Url.Action("SoldProperties", "Admin")" class="dropdown-item  @(IsActive("Admin", "SoldProperties") ? "active" : "")">Sold </a>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Admins", "Admin")" class="nav-item nav-link @(IsActive("Admin", "Admins") ? "active" : "")"><i class="bi bi-people-fill me-2" style="font-size:16px;"></i>Admins</a>
+
+                    <a href="@Url.Action("Users", "Admin")" class="nav-item nav-link @(IsActive("Admin", "Users") ? "active" : "")"><i class="bi bi-people-fill me-2" style="font-size:16px;"></i>Users</a>
+                    <a href="@Url.Action("Home", "HomePage")" class="nav-item nav-link @(IsActive("Home", "HomePage") ? "active" : "")"><i class="bi bi-house me-2" style="font-size:16px;"></i>Home</a>
+                    <a href="@Url.Action("Locations", "Admin")" class="nav-item nav-link @(IsActive("Admin", "Locations") ? "active" : "")"><i class="bi bi-geo-alt-fill me-2" style="font-size:16px;"></i>Locations</a>
+    
+
+
+                        @if(isSuberAdmin)
+                        {
+                            <a href="@Url.Action("AddAdmin", "Admin")" class="nav-item nav-link @(IsActive("Admin", "AddAdmin") ? "active" : "")">
+                                <i class="bi bi-person-plus-fill me-2"></i>Add new Admin
+                            </a>
+                        }
+                    
+
+
+
+
+
+                </div>
+            </nav>
+
+        </div>
+        <!-- Sidebar End -->
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0 w-100">
+
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item ">
+                        <a href="@Url.Action("WalletTransaction", "Admin")">
+                            <i class="bi bi-wallet2 me-lg-2"></i>
+                        </a>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0" id="notificationList" style="max-height:400px;overflow:hiddn;overflow-y:scroll;">
+
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="@userImgUrl" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">@userName</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="@Url.Action("Profile", "Admin")" class="dropdown-item">My Profile</a>
+                            <a href="@Url.Action("Logout", "Auth")" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+            @RenderBody()
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Real Estate</a>, All Right Reserved.
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            </br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/Home/property-list.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="~/User/js/add-property.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="~/Admin/js/admin.js"></script>
+    <script src="~/Admin/js/add-property.js"></script>
+    <script src="~/Admin/js/add-property.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+
+    <!-- Notification list -->
+
+    <script>
+        // Function to calculate "time ago" format for a given date
+        function timeAgo(dateString) {
+            const now = new Date();
+            const notificationDate = new Date(dateString); // Assume dateString is in ISO 8601 (UTC)
+            const seconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000); // Use getTime for milliseconds
+
+            const intervals = [
+                { label: 'year', seconds: 31536000 },
+                { label: 'month', seconds: 2592000 },
+                { label: 'day', seconds: 86400 },
+                { label: 'hour', seconds: 3600 },
+                { label: 'minute', seconds: 60 }
+            ];
+
+            for (const interval of intervals) {
+                const count = Math.floor(seconds / interval.seconds);
+                if (count >= 1) {
+                    return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+                }
+            }
+
+            return 'just now';
+        }
+
+        // Helper function to format the date into an English-readable format
+        function formatEnglishDate(dateString) {
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true,
+                timeZone: 'UTC' // Interpret date as UTC
+            };
+            return new Date(dateString).toLocaleString('en-US', options);
+        }
+
+        // Function to fetch and display notifications
+        async function getNotificationChat() {
+            try {
+                const response = await fetch('/User/GetNotificationChat', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include' // Include credentials for authentication
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch notifications.');
+                }
+
+                const data = await response.json();
+
+                if (!data.isAuthenticated) {
+                    document.getElementById('notificationList').innerHTML = `<li>${data.Message}</li>`;
+                } else {
+                    displayNotifications(data.notifications);
+                }
+            } catch (error) {
+                console.error('Error:', error.message);
+                document.getElementById('notificationList').innerHTML = "<li>Error loading notifications.</li>";
+            }
+        }
+
+        // Function to display notifications in the list
+        // Function to display notifications in the list
+        function displayNotifications(notifications) {
+            const notificationList = document.getElementById('notificationList');
+            notificationList.innerHTML = ''; // Clear existing notifications
+
+            if (notifications.length === 0) {
+                notificationList.innerHTML = "<li>No notifications available.</li>";
+                return;
+            }
+
+            notifications.forEach(notification => {
+                const li = document.createElement('li');
+
+                // Render the notification content, including the link
+                const contentPara = document.createElement('p');
+                contentPara.innerHTML = notification.content; // Set as innerHTML to render the link
+
+                // Create a second <p> element for the time ago information
+                const timePara = document.createElement('p');
+                timePara.style.fontSize = '12px';
+                timePara.style.paddingLeft = '5px';
+                timePara.innerHTML = `${timeAgo(notification.createdAt)}`;
+
+                // Append both paragraphs to the <li> element
+                li.appendChild(contentPara);
+                li.appendChild(timePara);
+
+                // Append the <li> to the notification list
+                notificationList.appendChild(li);
+            });
+        }
+
+        getNotificationChat();
+    </script>
+
+</body>
+
+</html>
+@functions {
+    public bool IsActive(string controller, string action)
+    {
+        // Get the current controller and action
+        var routeData = ViewContext.RouteData;
+        var currentController = routeData.Values["controller"]?.ToString();
+        var currentAction = routeData.Values["action"]?.ToString();
+
+        // Check if current controller and action match the provided values
+        return string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
+    }
+}

@@ -1,0 +1,182 @@
+﻿@model IEnumerable<Real_State.Tables.Property>
+
+@{
+    ViewData["Title"] = "Saved Homes";
+    Layout = "~/Views/HomePage/_LAYOUT.cshtml";
+
+}
+
+
+
+<div class="container rounded bg-white mt-5 mb-5">
+    @if (Model == null || !Model.Any())
+    {
+                <div class="sc-jnOGJG wOVHg fonts-stage-2 " data-test="MyZillowEmptyView-wrapper" style="padding:20px;display: flex;flex-direction: column;align-items: center;gap: 20px;">
+                    <img alt="stylized home with hearts" src="https://www.zillowstatic.com/s3/my-zillow-next/static/illustration-empty-state-fullscreen.png" class="Image-c11n-8-96-5__sc-1rtmhsc-0 sc-kAkpmW  eSSJpo"><h3 class="Text-c11n-8-96-5__sc-aiai24-0 StyledHeading-c11n-8-96-5__sc-s7fcif-0 bzMJZg sc-dZoequ lcQzoQ">Save homes for safe keeping.</h3><p class="Text-c11n-8-96-5__sc-aiai24-0 StyledParagraph-c11n-8-96-5__sc-e666if-0 ieUcij sc-eZkCL sc-cmaqmh eVBDKF iEyUzu">
+                        Whenever you find properties you like, select the
+                        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" role="img" class="Icon-c11n-8-96-5__sc-13llmml-0 iKGlXQ" style="width: 25px;">
+                            <path stroke="none" d="M27.66 6.19a7.85 7.85 0 00-11 .13L16 7l-.65-.66a7.85 7.85 0 00-11-.13 8.23 8.23 0 00.09 11.59l.42.42L15.29 28.7a1 1 0 001.42 0l10.44-10.5.42-.42a8.23 8.23 0 00.09-11.59zm-1.42 10.06l-.52.52L16 26.55l-9.72-9.78-.52-.52A6.15 6.15 0 014 13.19a5.91 5.91 0 011.62-5.43 5.81 5.81 0 014.67-1.71 6 6 0 013.78 1.87l.5.5 1.08 1.08a.5.5 0 00.7 0l1.08-1.08.5-.5a6 6 0 013.78-1.87 5.81 5.81 0 014.67 1.71A5.91 5.91 0 0128 13.19a6.15 6.15 0 01-1.76 3.06z"></path>
+                        </svg> to save them here.
+                    </p><a href="/homes/" class="btn" style="background: var(--app-bg);color: white;">Search for properties </a>
+                </div>
+    }
+    else
+    {
+        <!-- Remove All Properties Button -->
+        <div class="col-12 mt-3 d-flex justify-content-between p-3">
+            <h4 class="fw-bold">Saved Properties</h4>
+                <button type="button" id="removeAllSavedHomesButton" class="btn btn-danger btn-block" style="width:fit-content;">
+                    <i class="bi bi-trash"></i> Remove
+                    All Saved Properties
+                </button>
+        </div>
+        <div class="container rounded bg-white mt-5 mb-5">
+
+            <div class="row p-3">
+                @foreach (var property in Model)
+                {
+                    <div class="w-100">
+                        <div class="card w-100" style="display: flex;flex-direction:row;  padding: 0; margin-bottom: 20px;">
+                            <div style="width: 30%; position: relative;">
+                                <img src="@property.MainImagePath" class="card-img-top" alt="Property Image" style="max-height: 300px; object-fit: cover;" />
+                            </div>
+
+                            <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                   <div>
+                                        <h5 class="card-title" style="color:@(property.IsSold ? "red" : "")">
+                                            @(property.IsSold ? "Sold" : "Active")
+                                        </h5>
+                                        <h5 class="card-title">
+                                            <small style="font-size: 0.7em">EGP</small> @property.Price
+                                        </h5>
+                                        <div class="card-text">
+
+                                                <span class="icon-text">
+    
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                                                            <path d="M280-600q-33 0-56.5-23.5T200-680q0-33 23.5-56.5T280-760q33 0 56.5 23.5T360-680q0 33-23.5 56.5T280-600ZM200-80q-17 0-28.5-11.5T160-120q-33 0-56.5-23.5T80-200v-240h120v-30q0-38 26-64t64-26q20 0 37 8t31 22l56 62q8 8 15.5 15t16.5 13h274v-326q0-14-10-24t-24-10q-6 0-11.5 2.5T664-790l-50 50q5 17 2 33.5T604-676L494-788q14-9 30-11.5t32 3.5l50-50q16-16 36.5-25t43.5-9q48 0 81 33t33 81v326h80v240q0 33-23.5 56.5T800-120q0 17-11.5 28.5T760-80H200Zm-40-120h640v-160H160v160Zm0 0h640-640Z"></path>
+                                                        </svg>
+
+                                                    
+                                                    <p class="number">@property.Bedrooms</p>
+                                                </span>
+                                            <span class="icon-text">
+
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                                                    <path d="M80-200v-240q0-27 11-49t29-39v-112q0-50 35-85t85-35h160q23 0 43 8.5t37 23.5q17-15 37-23.5t43-8.5h160q50 0 85 35t35 85v112q18 17 29 39t11 49v240h-80v-80H160v80H80Zm440-360h240v-80q0-17-11.5-28.5T720-680H560q-17 0-28.5 11.5T520-640v80Zm-320 0h240v-80q0-17-11.5-28.5T400-680H240q-17 0-28.5 11.5T200-640v80Zm-40 200h640v-80q0-17-11.5-28.5T760-480H200q-17 0-28.5 11.5T160-440v80Zm640 0H160h640Z"></path>
+                                                </svg>
+
+                                                <p class="number">@property.Bathrooms</p>
+                                            </span>
+                                            }
+                                            <span class="icon-text">
+                                                <p class="type">Area</p>: <p class="number">@property.Space</p> sqft
+                                            </span>
+                                        </div>
+
+                                        <p  class="text-description">@property.Description</p>
+
+                                        <div class="card-text">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                                                <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"></path>
+                                            </svg>
+                                            <p class="location-title">@property.Location</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <button class="btn btn-danger save-icon" data-property-id="@property.Id" id="icon-@property.Id" >
+                                                    <i class="bi bi-trash"></i> Remove
+                                                </button>
+                                   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    }
+</div>
+
+
+@* <<<<<<<<<<<<<<<<<<<<<<save property section>>>>>>>>>>>>>>>>>>>> *@
+<!-- Include jQuery (place it before any custom scripts that use jQuery) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".save-icon").click(function () {
+            var propertyId = $(this).data("property-id");
+            var icon = $(this); // Reference to the clicked icon
+
+            // Confirm action before proceeding
+            if (confirm("Are you sure you want to remove this property?")) {
+                // Send AJAX request
+                $.ajax({
+                    url: '@Url.Action("RemoveSavedProperty", "User")',
+                    type: 'POST',
+                    data: { propertyId: propertyId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Remove the property card from the DOM
+                            $(`#icon-${propertyId}`).closest('.card').fadeOut(300, function () {
+                                $(this).remove();
+
+                                // Check if there are no more saved properties
+                                if ($(".card").length === 0) {
+                                    // Replace with the empty state UI
+                                    $(".container").html(`
+                                            <div class="sc-jnOGJG wOVHg fonts-stage-2 " data-test="MyZillowEmptyView-wrapper" style="padding:20px;display: flex;flex-direction: column;align-items: center;gap: 20px;">
+                                                <img alt="stylized home with hearts" src="https://www.zillowstatic.com/s3/my-zillow-next/static/illustration-empty-state-fullscreen.png" class="Image-c11n-8-96-5__sc-1rtmhsc-0 sc-kAkpmW  eSSJpo">
+                                                <h3 class="Text-c11n-8-96-5__sc-aiai24-0 StyledHeading-c11n-8-96-5__sc-s7fcif-0 bzMJZg sc-dZoequ lcQzoQ">Save homes for safe keeping.</h3>
+                                                <p class="Text-c11n-8-96-5__sc-aiai24-0 StyledParagraph-c11n-8-96-5__sc-e666if-0 ieUcij sc-eZkCL sc-cmaqmh eVBDKF iEyUzu">
+                                                    Whenever you find properties you like, select the
+                                                    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" role="img" class="Icon-c11n-8-96-5__sc-13llmml-0 iKGlXQ" style="width: 25px;">
+                                                        <path stroke="none" d="M27.66 6.19a7.85 7.85 0 00-11 .13L16 7l-.65-.66a7.85 7.85 0 00-11-.13 8.23 8.23 0 00.09 11.59l.42.42L15.29 28.7a1 1 0 001.42 0l10.44-10.5.42-.42a8.23 8.23 0 00.09-11.59zm-1.42 10.06l-.52.52L16 26.55l-9.72-9.78-.52-.52A6.15 6.15 0 014 13.19a5.91 5.91 0 011.62-5.43 5.81 5.81 0 014.67-1.71 6 6 0 013.78 1.87l.5.5 1.08 1.08a.5.5 0 00.7 0l1.08-1.08.5-.5a6 6 0 013.78-1.87 5.81 5.81 0 014.67 1.71A5.91 5.91 0 0128 13.19a6.15 6.15 0 01-1.76 3.06z"></path>
+                                                    </svg> to save them here.
+                                                </p>
+                                                <a href="/homes/" class="btn" style="background: var(--app-bg);color: white;">Search for properties</a>
+                                            </div>
+                                        `);
+                                }
+                            });
+                        } else {
+                            alert(response.message || "Failed to remove the property. Please try again.");
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred while processing your request. Please try again.");
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#removeAllSavedHomesButton').on('click', function () {
+            if (confirm('Are you sure you want to remove all saved properties?')) {
+                $.ajax({
+                    url: '/User/RemoveAllSavedHomes', // Endpoint URL
+                    type: 'POST',
+                    success: function (response) {
+                        // Redirect to the saved properties page
+                        window.location.href = '/User/SavedProperties';
+                    },
+                    error: function (xhr, status, error) {
+                        alert('An error occurred while removing saved properties. Please try again.');
+                        console.error(error);
+                    }
+                });
+            }
+        });
+    });
+</script>

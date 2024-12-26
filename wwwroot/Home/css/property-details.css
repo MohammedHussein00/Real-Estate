@@ -1,0 +1,156 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.listing-container {
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.back:hover {
+    color: var(--color-1);
+}
+
+.status {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.location {
+    color: #555;
+}
+
+.estimate {
+    font-weight: bold;
+    color: #555;
+}
+
+.modal.show .modal-dialog {
+    -webkit-transform: none;
+    transform: none;
+    width: 96%;
+    height: 90%;
+    max-width: none;
+}
+
+.gallery-container {
+    padding: 20px;
+}
+
+.gallery-image {
+    width: 100%;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+    .gallery-image:hover {
+        transform: scale(1.05);
+    }
+
+.map-container {
+    margin-top: 20px;
+}
+
+/* Fullscreen image styling */
+#fullscreenImage {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.bg-dark {
+    background-color: #7a7a7a00 !important;
+    border: none;
+    height: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.estimate span {
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+.details-box {
+    text-align: center;
+    font-size: 16px;
+}
+
+    .details-box span {
+        display: block;
+        font-size: 12px;
+        color: #888;
+    }
+
+.attributes div {
+    background-color: #f0f2f5;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.tags span {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.special-section h2 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.footer {
+    font-size: 12px;
+    color: #777;
+    margin-top: 15px;
+}
+
+.agent-box {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-tour {
+    background-color: #1a73e8;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn-contact {
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+.map-container {
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+::ng-deep .leaflet-container .leaflet-control-attribution {
+    display: none !important;
+}
+
